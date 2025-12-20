@@ -1,0 +1,201 @@
+/* ================================================================================ */
+/*                              CARDS GRID
+/* ================================================================================ */
+.personas-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 10px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.cards-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ================================================================================ */
+/*                              CARD ITEM
+/* ================================================================================ */
+.persona-card-item {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.persona-card-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 21, 41, 0.15);
+  transform: translateY(-2px);
+}
+
+.persona-card-item .ant-card-body {
+  padding: 10px 24px;
+}
+
+/* ================================================================================ */
+/*                              CARD HEADER
+/* ================================================================================ */
+.persona-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.persona-card-avatar {
+   background: linear-gradient(60deg, #5d5d72, #001529);
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.persona-card-avatar > .ant-avatar-string{
+  font-size: 20px;
+}
+
+
+.card-status {
+  font-weight: 500;
+  border: none;
+  padding: 4px 12px;
+}
+
+/* ================================================================================ */
+/*                              CARD BODY
+/* ================================================================================ */
+.card-body {
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #001529;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-info {
+  font-size: 13px;
+  color: #595959;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-empresa {
+  font-size: 13px;
+  color: #001529;
+  font-weight: 500;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-tags {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.card-tag-rol {
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+}
+
+/* ================================================================================ */
+/*                              CARD FOOTER
+/* ================================================================================ */
+.card-footer {
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.card-btn-action {
+  color: #001529;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.card-btn-action:hover:not(:disabled) {
+  color: #002140;
+  background: #f5f5f5;
+}
+
+.card-btn-action[disabled] {
+  color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+/* ================================================================================ */
+/*                              RESPONSIVE
+/* ================================================================================ */
+@media (max-width: 768px) {
+  .personas-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .persona-card-item .ant-card-body {
+    padding: 16px;
+  }
+
+  .card-title {
+    font-size: 15px;
+  }
+
+  .card-info,
+  .card-empresa {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .personas-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* ================================================================================ */
+/*                              ANIMATIONS
+/* ================================================================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.persona-card-item {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.persona-card-item:nth-child(1) { animation-delay: 0.05s; }
+.persona-card-item:nth-child(2) { animation-delay: 0.1s; }
+.persona-card-item:nth-child(3) { animation-delay: 0.15s; }
+.persona-card-item:nth-child(4) { animation-delay: 0.2s; }
+.persona-card-item:nth-child(5) { animation-delay: 0.25s; }
+.persona-card-item:nth-child(6) { animation-delay: 0.3s; }

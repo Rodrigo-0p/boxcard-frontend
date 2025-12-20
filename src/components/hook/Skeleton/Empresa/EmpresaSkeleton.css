@@ -1,0 +1,82 @@
+.empresa-header-skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.header-actions-skeleton {
+  display: flex;
+  gap: 12px;
+}
+
+.empresa-toolbar-skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.toolbar-filters-skeleton {
+  display: flex;
+  gap: 12px;
+}
+
+.empresa-card-skeleton {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header-skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-info-skeleton {
+  margin-bottom: 12px;
+}
+
+.card-tags-skeleton {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.card-actions-skeleton {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.empresas-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.empresa-dashboard-skeleton {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .empresa-header-skeleton,
+  .empresa-toolbar-skeleton {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .empresas-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+}

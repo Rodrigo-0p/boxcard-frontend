@@ -1,0 +1,257 @@
+/* components/EmpresasListado/EmpresasHandsontable.css */
+/* FASE 4: Vista Tabla con Handsontable - Estilos */
+
+.empresas-handsontable-container {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  animation: fadeIn 0.3s ease-in;
+}
+
+.handsontable-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.empresas-table-container .empresas-table thead th {
+  background: #001529 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-right: 1px solid #002140 !important;
+  padding: 12px 8px !important;
+  font-size: 13px !important;
+}
+
+.empresas-table-container .empresas-table thead th > .ant-table-column-sorters > .ant-table-column-sorter {
+  color: #ffffff !important;
+}
+
+.empresas-table-container .empresas-table thead th:hover {
+  background: #002140 !important;
+}
+
+.empresas-handsontable-container .handsontable tbody th {
+  border-right: 1px solid #f0f0f0 !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  padding: 7px !important;
+  font-size: 11px !important;
+}
+
+.empresas-handsontable-container .handsontable td {
+  border-right: 1px solid #f0f0f0 !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  padding: 8px !important;
+  font-size: 13px !important;
+}
+
+.empresas-handsontable-container .handsontable tbody tr:hover td {
+  background: #fafafa !important;
+}
+
+.cell-logo {
+  padding: 4px !important;
+}
+
+.logo-container-empresaTable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: 2px solid #d9d9d9;
+}
+
+.logo-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-icon {
+  font-size: 20px;
+}
+
+.cell-tag {
+  padding: 4px !important;
+}
+
+.tag-tipo,
+.tag-modalidad,
+.tag-estado-activo,
+.tag-estado-inactivo {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tag-tipo {
+  background: #f0f0f0;
+  color: #595959;
+  border: 1px solid #d9d9d9;
+}
+
+.tag-modalidad {
+  background: #e6f7ff;
+  color: #0050b3;
+  border: 1px solid #91d5ff;
+}
+
+.tag-estado-activo {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.tag-estado-inactivo {
+  background: #f5f5f5;
+  color: #8c8c8c;
+  border: 1px solid #d9d9d9;
+}
+
+.cell-acciones {
+  padding: 4px !important;
+}
+
+.acciones-container {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-view:hover {
+  background: #e6f7ff;
+  transform: scale(1.1);
+}
+
+.btn-edit:hover {
+  background: #fff7e6;
+  transform: scale(1.1);
+}
+
+.btn-delete:hover {
+  background: #fff1f0;
+  transform: scale(1.1);
+}
+
+.empresas-handsontable-container .handsontable .columnSorting {
+  color: #ffffff !important;
+}
+
+.empresas-handsontable-container .handsontable .columnSorting:before {
+  color: #ffffff !important;
+}
+
+.empresas-handsontable-container .handsontable .htFiltersMenuLabel {
+  font-size: 12px !important;
+}
+
+.empresas-handsontable-container .handsontable .htFiltersMenuConditionsBorder {
+  border-color: #d9d9d9 !important;
+}
+
+.empresas-handsontable-container .handsontable::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.empresas-handsontable-container .handsontable::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.empresas-handsontable-container .handsontable::-webkit-scrollbar-thumb {
+  background: #001529;
+  border-radius: 4px;
+}
+
+.empresas-handsontable-container .handsontable::-webkit-scrollbar-thumb:hover {
+  background: #002140;
+}
+
+@media (max-width: 768px) {
+  .empresas-handsontable-container {
+    padding: 12px;
+  }
+
+  .empresas-handsontable-container .handsontable td,
+  .empresas-handsontable-container .handsontable th {
+    font-size: 11px !important;
+    padding: 6px 4px !important;
+  }
+
+  .logo-container {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .btn-action {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.card-avatar-table {
+  background: linear-gradient(60deg, #5d5d72, #001529);
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.card-avatar-table > .ant-avatar-string{
+  font-size: 15px;
+}
+
+.empresas-handsontable-container .handsontable .htCore tbody td.area {
+  background: #e6f7ff !important;
+}
+
+.empresas-handsontable-container .handsontable .current {
+  background: #bae7ff !important;
+}
+
+.empresas-handsontable-container .handsontable .htContextMenu {
+  display: none !important;
+}

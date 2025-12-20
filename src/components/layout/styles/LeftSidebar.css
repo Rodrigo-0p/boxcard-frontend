@@ -1,0 +1,31 @@
+.demo-logo-vertical {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, .2);
+  border-radius: 6px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  margin: 8px 8px;
+  padding: 1px;
+  overflow: hidden;
+  border-radius: 6px;
+  background:linear-gradient(186deg, #7f91b0, #001529);
+  cursor: pointer;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* mantiene proporciones sin recortar */
+}
+
+.logoBoxCard{
+  background: linear-gradient(360deg, #ffffff, #184982);
+  width: auto;
+  border-radius: 35px;
+}

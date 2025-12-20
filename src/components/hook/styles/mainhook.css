@@ -1,0 +1,83 @@
+/**************************************************/
+      /* ESTO ES PARA EL ESTILO DEL ICON */
+/**************************************************/
+.fondo-logo {
+  position: relative;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(104 86 86 / 10%);
+  margin: 16px;
+  border-radius: 6px;
+  overflow: hidden; 
+}
+
+.logo-container {
+  border-radius: 1rem; 
+}
+
+.logo-group {
+  display: flex;
+  align-items: center;
+}
+
+.dynamic-box-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 0.75rem;
+  background-image: linear-gradient(135deg, #2e4894 0%, #bac7ec 50%, #48668a 100%);
+  transform: rotate(12deg);
+}
+
+.inner-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 4.5px;
+}
+
+.inner-content {
+  width: 100%;
+  height: 100%;
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  transform: rotate(-12deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bc-text {
+  font-size: 17.5px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
+.logo-icon-box-geometric {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 25px;
+  background: linear-gradient(45deg, #7b7b85, #0f3460);
+  border-radius: 20%;
+}
+
+.logo-icon-box-geometric svg {
+  width: 20px;
+  height: 20px;
+  stroke: rgb(218 218 218);
+}
+
+.boxcard-text {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;    
+}
+/**************************************************/
+/**************************************************/

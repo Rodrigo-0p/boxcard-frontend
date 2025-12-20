@@ -1,0 +1,139 @@
+/* ================================================================================ */
+/*                              TOOLBAR
+/* ================================================================================ */
+.empresas-toolbar {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+
+.toolbar-left {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.search-input {
+  height: 36px;
+  border-radius: 18px;
+  border-color: #d9d9d9;
+}
+
+.search-input:hover {
+  border-color: #001529;
+}
+
+.search-input:focus,
+.search-input.ant-input-focused {
+  border-color: #001529;
+  box-shadow: 0 0 0 2px rgba(0, 21, 41, 0.1);
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.empresas-toolbar .ant-select {
+  height: 36px;
+}
+
+.empresas-toolbar .ant-select-selector {
+  height: 36px !important;
+  border-radius: 6px !important;
+  border-color: #d9d9d9 !important;
+  display: flex;
+  align-items: center;
+}
+
+.empresas-toolbar .ant-select-selector:hover {
+  border-color: #001529 !important;
+}
+
+.empresas-toolbar .ant-select-focused .ant-select-selector {
+  border-color: #001529 !important;
+  box-shadow: 0 0 0 2px rgba(0, 21, 41, 0.1) !important;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: #f5f5f5;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.view-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.view-btn.ant-btn-default {
+  background: transparent;
+  color: #8c8c8c;
+}
+
+.view-btn.ant-btn-primary {
+  background: #001529 !important;
+  color: white !important;
+  width: 35px;
+}
+
+.view-btn:hover {
+  background: #d9d9d9 !important;
+}
+
+.view-btn.ant-btn-primary:hover {
+  background: #002140 !important;
+}
+
+@media (max-width: 768px) {
+  .empresas-toolbar {
+    padding: 12px 16px;
+  }
+
+  .toolbar-left {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .empresas-toolbar .ant-select {
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.empresas-toolbar {
+  animation: fadeIn 0.3s ease-out;
+}
+
