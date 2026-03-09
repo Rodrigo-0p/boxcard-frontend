@@ -14,6 +14,7 @@ const PersonaModal = ({ visible, mode = 'create', persona = null, onClose, onSav
   const [loadingMenus       , setLoadingMenus       ] = React.useState(false);
   const [menusActivos       , setMenusActivos       ] = React.useState({});
   const [loadingMenusActivos, setLoadingMenusActivos] = React.useState(false);
+
   const message = Main.useMessage();
 
   const handleSubmit = async (formData) => {
@@ -22,12 +23,14 @@ const PersonaModal = ({ visible, mode = 'create', persona = null, onClose, onSav
       if (onSave) {
         await onSave(formData);
       }
-      // Limpiar estados ANTES de cerrar
+      
+      // Limpiar estados y cerrar
       setMenusDisponibles({});
       setMenusActivos({});
       setLoadingMenus(false);
       setLoadingMenusActivos(false);
       onClose();
+      
     } catch (error) {
       console.error('Error guardando persona:', error);
     } finally {
@@ -116,7 +119,6 @@ const PersonaModal = ({ visible, mode = 'create', persona = null, onClose, onSav
     }
   };
 
-  // NUEVA FUNCIÓN: Cargar menús activos de la persona
   const loadMenusActivos = async (cod_persona) => {
     setLoadingMenusActivos(true);
     try {
@@ -152,7 +154,7 @@ const PersonaModal = ({ visible, mode = 'create', persona = null, onClose, onSav
       onLoadMenusForRole={loadMenusForRole}
       menusActivos={menusActivos}
       loadingMenusActivos={loadingMenusActivos}
-      setLoadingMenusActivos={setLoadingMenusActivos}
+      setLoadingMenusActivos={setLoadingMenusActivos}      
     />
   );
 };

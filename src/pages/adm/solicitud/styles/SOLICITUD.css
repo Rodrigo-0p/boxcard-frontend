@@ -1,0 +1,102 @@
+/* ============================================================
+   SOLICITUD.css  — Estilos del módulo Solicitudes de Carga
+   ============================================================ */
+
+.empresas-header {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header-left {
+    flex: 1;
+    min-width: 250px;
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-description {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.btn-primary {
+    background: #0f172a !important;
+    border: none !important;
+    color: white !important;
+    height: 38px;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: #1e293b !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.btn-secondary {
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-icon-only {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.btn-icon-only:hover {
+    background: #f8fafc;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+/* Premium Table modifications if needed */
+.premium-table .ant-table-thead>tr>th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}

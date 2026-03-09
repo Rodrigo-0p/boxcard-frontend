@@ -68,7 +68,7 @@ export const EmpresaCardSkeleton = () => {
   );
 };
 
-export const EmpresasSkeletonGrid = ({ count = 6 }) => {
+export const EmpresasSkeletonGrid = ({ count = 3 }) => {
   return (
     <div className="empresas-skeleton-grid">
       {Array.from({ length: count }).map((_, index) => (
@@ -83,7 +83,7 @@ export const EmpresaSkeleton = () => {
     <div className="empresa-dashboard-skeleton">
       <EmpresaHeaderSkeleton />
       <EmpresaToolbarSkeleton />
-      <EmpresasSkeletonGrid count={6} />
+      <EmpresasSkeletonGrid count={3} />
     </div>
   );
 };

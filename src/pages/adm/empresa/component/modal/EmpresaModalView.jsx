@@ -1,48 +1,49 @@
 import * as React from 'react';
-import MainIcon   from '../../../../../util/mainIcon';
-import Main       from '../../../../../util/main';
-import {useAuth}  from '../../../../../context/AuthContext'
+import MainIcon from '../../../../../util/mainIcon';
+import Main from '../../../../../util/main';
+import { useAuth } from '../../../../../context/AuthContext'
 import './EmpresaModal.css';
 
 const { Option } = Main.Select;
 
 const UPLOAD_CONFIG = {
-  MAX_SIZE_MB    : 2,
-  MAX_SIZE_BYTES : 2 * 1024 * 1024
+  MAX_SIZE_MB: 2,
+  MAX_SIZE_BYTES: 2 * 1024 * 1024
 };
 
 const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, permisos }) => {
 
   const message = Main.useMessage();
-  const [form]  = Main.Form.useForm();
-  const [logoFile     , setLogoFile    ] = React.useState(null);
-  const [logoPreview  , setLogoPreview ] = React.useState(null);
-  const [previewOpen  , setPreviewOpen ] = React.useState(false);
-  const [previewImage , setPreviewImage] = React.useState('');
-  const [initialData  , setInitialData ] = React.useState(null);
+  const [form] = Main.Form.useForm();
+  const [logoFile, setLogoFile] = React.useState(null);
+  const [logoPreview, setLogoPreview] = React.useState(null);
+  const [previewOpen, setPreviewOpen] = React.useState(false);
+  const [previewImage, setPreviewImage] = React.useState('');
+  const [initialData, setInitialData] = React.useState(null);
 
-  const { getLogo } = useAuth()
+  const { getLogo, role } = useAuth()
 
   React.useEffect(() => {
     if (!visible) return;
-    
-    const loadModal = async () =>{
+
+    const loadModal = async () => {
       if (empresa && mode !== 'create') {
         const data = {
-          ruc        : empresa.ruc         || '',
-          nombre     : empresa.nombre      || '',
-          direccion  : empresa.direccion   || '',
-          correo     : empresa.correo      || '',
-          nro_telef  : empresa.nro_telef   || '',
+          ruc: empresa.ruc || '',
+          nombre: empresa.nombre || '',
+          direccion: empresa.direccion || '',
+          correo: empresa.correo || '',
+          nro_telef: empresa.nro_telef || '',
           tip_empresa: empresa.tip_empresa || '',
-          modalidad  : empresa.modalidad   || '',
-          limit_venc : empresa.limit_venc  || 0,
-          estado     : empresa.estado      === 'A',
-          logo_url   : empresa.logo_url    || null
+          modalidad: empresa.modalidad || '',
+          limite_credito: empresa.limite_credito || 0,
+          es_proveedor: empresa.es_proveedor === 'S',
+          estado: empresa.estado === 'A',
+          logo_url: empresa.logo_url || null
         };
         form.setFieldsValue(data);
         setInitialData(data);
-        
+
         if (empresa.logo_url) {
           const base64String = await getLogo(empresa.logo_url);
           if (base64String) {
@@ -57,7 +58,7 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
         setInitialData(null);
       }
     }
-    
+
     loadModal();
   }, [empresa, mode, visible, form]);
 
@@ -88,18 +89,19 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
     try {
       const values = await form.validateFields();
       if (mode === 'edit' && initialData) {
-        const hasChanges = 
-          values.nombre      !== initialData.nombre      ||
-          values.ruc         !== initialData.ruc         ||
-          values.direccion   !== initialData.direccion   ||
-          values.correo      !== initialData.correo      ||
-          values.nro_telef   !== initialData.nro_telef   ||
+        const hasChanges =
+          values.nombre !== initialData.nombre ||
+          values.ruc !== initialData.ruc ||
+          values.direccion !== initialData.direccion ||
+          values.correo !== initialData.correo ||
+          values.nro_telef !== initialData.nro_telef ||
           values.tip_empresa !== initialData.tip_empresa ||
-          values.modalidad   !== initialData.modalidad   ||
-          values.limit_venc  !== initialData.limit_venc  ||
-          values.estado      !== initialData.estado      ||
-          logoFile           !== null;
-        
+          values.modalidad !== initialData.modalidad ||
+          values.limite_credito !== initialData.limite_credito ||
+          values.es_proveedor !== initialData.es_proveedor ||
+          values.estado !== initialData.estado ||
+          logoFile !== null;
+
         if (!hasChanges) {
           message.info('No hay cambios para guardar');
           return;
@@ -108,8 +110,8 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
       if (onSubmit) {
         onSubmit({
           ...values,
-          estado : values.estado ? 'A' : 'I',
-          logo   : logoFile
+          estado: values.estado ? 'A' : 'I',
+          logo: logoFile
         });
       }
     } catch (error) {
@@ -117,13 +119,13 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
     }
   };
 
-  const handleUploadChange = (file) => {                     
+  const handleUploadChange = (file) => {
     // Validar tamaño
     if (file.size > UPLOAD_CONFIG.MAX_SIZE_BYTES) {
       message.error(`La imagen debe ser menor a ${UPLOAD_CONFIG.MAX_SIZE_MB}MB`);
       return Main.Upload.LIST_IGNORE;
     }
-    
+
     // Guardar el archivo recortado
     setLogoFile(file);
 
@@ -133,7 +135,7 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
       setLogoPreview(reader.result);
     };
     reader.readAsDataURL(file);
-    
+
     return false; // Prevenir upload automático
   }
 
@@ -147,24 +149,24 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
   };
 
   const modalConfig = {
-    create: { title: 'Nueva Empresa'     , subtitle: 'Complete la información requerida', icon: <MainIcon.PlusOutlined />,  okText: 'Crear'  ,  disabled: false },
-    edit  : { title: 'Editar Empresa'    , subtitle: 'Modifique los datos necesarios'   , icon: <MainIcon.EditOutlined />,  okText: 'Guardar',  disabled: false },
-    view  : { title: 'Detalle de Empresa', subtitle: 'Información de la empresa'        , icon: <MainIcon.EyeOutlined /> ,  okText: null     ,  disabled: true  }
+    create: { title: 'Nueva Empresa', subtitle: 'Complete la información requerida', icon: <MainIcon.PlusOutlined />, okText: 'Crear', disabled: false },
+    edit: { title: 'Editar Empresa', subtitle: 'Modifique los datos necesarios', icon: <MainIcon.EditOutlined />, okText: 'Guardar', disabled: false },
+    view: { title: 'Detalle de Empresa', subtitle: 'Información de la empresa', icon: <MainIcon.EyeOutlined />, okText: null, disabled: true }
   };
 
   const config = modalConfig[mode] || modalConfig.create;
 
   return (
     <Main.Modal
-      open          = {visible}
-      onCancel      = {handleClose}
-      footer        = {null}
-      closable      = {false}
-      width         = {800}
-      className     = "empresa-modal"
-      centered            
-      maskClosable  = {false}
-      keyboard      = {false}
+      open={visible}
+      onCancel={handleClose}
+      footer={null}
+      closable={false}
+      width={800}
+      className="empresa-modal"
+      centered
+      maskClosable={false}
+      keyboard={false}
     >
       <div className="empresa-modal-header">
         <div className="modal-title-section">
@@ -181,11 +183,11 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
 
       <div className="empresa-modal-body">
         <Main.Form form={form} layout="vertical" disabled={config.disabled}>
-          
+
           {/* LOGO UPLOAD CON IMG CROP */}
           <div className="form-section">
             <div className="upload-title">Logo de la Empresa</div>
-            
+
             <div className="upload-container">
               {logoPreview ? (
                 <div className="logo-preview-wrapper">
@@ -222,9 +224,9 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
                 >
                   <Main.Upload
                     accept="image/*"
-                    showUploadList = {false}
-                    beforeUpload   = {handleUploadChange}
-                    disabled       = {config.disabled}
+                    showUploadList={false}
+                    beforeUpload={handleUploadChange}
+                    disabled={config.disabled}
                   >
                     <div className="upload-placeholder">
                       <div className="upload-icon">
@@ -296,9 +298,38 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
                   <Option value="POS">Postpago</Option>
                 </Main.Select>
               </Main.Form.Item>
-              <Main.Form.Item name="limit_venc" label="Días de Crédito" rules={[{ required: true, message: 'Días de crédito requeridos' }, { type: 'number', min: 0, message: 'Debe ser mayor o igual a 0' }]} tooltip="Cantidad de días de crédito permitidos">
-                <Main.InputNumber placeholder="Ej: 30" min={0} max={365} style={{ width: '100%' }} />
+              <Main.Form.Item
+                name="limite_credito"
+                label="Límite de Crédito"
+                rules={[
+                  { required: true, message: 'Límite requerido' },
+                  { type: 'number', min: 0, message: 'Debe ser mayor o igual a 0' }
+                ]}
+                tooltip="Monto máximo de límite de crédito. Ingrese 0 para crédito ilimitado."
+              >
+                <Main.InputNumber
+                  placeholder="0 = Ilimitado"
+                  min={0}
+                  style={{ width: '100%' }}
+                  formatter={value => `₲ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
+                  parser={value => value.replace(/\₲\s?|(\.*)/g, '')}
+                />
               </Main.Form.Item>
+              {permisos?.insert && (
+                <Main.Form.Item
+                  name="es_proveedor"
+                  label={<span style={{ fontWeight: 600 }}>¿Es Entidad Otorgante de Créditos?</span>}
+                  valuePropName="checked"
+                  tooltip="Activar si esta empresa ofrece el servicio de crédito y confirmará solicitudes."
+                >
+                  <Main.Switch
+                    checkedChildren={<MainIcon.CheckOutlined />}
+                    unCheckedChildren={<MainIcon.CloseOutlined />}
+                    disabled={config.disabled}
+                  />
+                </Main.Form.Item>
+              )}
+
               <Main.Form.Item name="estado" label="Estado" valuePropName="checked">
                 <Main.Switch checkedChildren="A" unCheckedChildren="I" />
               </Main.Form.Item>

@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Modal, Spin } from 'antd';
-import { MailOutlined       , PhoneOutlined, 
-         WhatsAppOutlined   , ClockCircleOutlined,
-         InfoCircleOutlined , CloseOutlined  } from '@ant-design/icons';
-import Main    from '../../util/main';
+import Main     from '../../util/main';
+import MainIcon from '../../util/mainIcon';
 import './ContactInfoModal.css';
 
 const url_info_contacto = '/public/info-contacto';
@@ -34,15 +32,62 @@ const ContactInfoModal = ({ visible, onClose }) => {
     }
   };
 
-  const getIcon = (tipo) => {
-    const icons = {
-      email    : <MailOutlined />,
-      telefono : <PhoneOutlined />,
-      whatsapp : <WhatsAppOutlined />,
-      horario  : <ClockCircleOutlined />
-    };
-    return icons[tipo] || <InfoCircleOutlined />;
-  };
+  const copyText = (text)=> {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      // Fallback para Safari / HTTP / navegadores viejos
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed'; // evita scroll
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      try {
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return Promise.resolve();
+      } catch (err) {
+        document.body.removeChild(textarea);
+        return Promise.reject(err);
+      }
+    }
+  }
+
+
+  const copyToClipboard = (text,index)=>{
+    copyText(text).then(() => {
+      const CardElement   = document.querySelector(`.contact-info-item-${index}`);
+      const CardValue     = document.querySelector(`.contact-info-value-${index}`);
+      const originalValue = CardValue.textContent;
+
+      CardValue.textContent        = '¡Copiado!';
+      CardElement.style.background = 'linear-gradient(135deg, #ebfff5 0%, #6dbf99 100%)';
+
+      setTimeout(() => {
+        CardValue.textContent        = originalValue;
+        CardElement.style.background = '';
+      }, 1500);
+    }).catch(() => {
+      console.log('Advertencia, No se pudo copiar!!');
+    });
+
+    // navigator.clipboard.writeText(text).then(()=>{
+    //   const CardElement   = document.querySelector(`.contact-info-item-${index}`);
+    //   const CardValue     = document.querySelector(`.contact-info-value-${index}`);
+    //   const originalValue = CardValue.textContent;
+
+    //   CardValue.textContent         = '¡Copiado!';
+    //   CardElement.style.background  = 'linear-gradient(135deg, #ebfff5 0%, #6dbf99 100%)';
+      
+    //   setTimeout(() => {
+    //     CardValue.textContent         = originalValue;
+    //     CardElement.style.background  = '';
+    //   }, 1500);
+    // })
+  }
 
   return (
     <Modal
@@ -57,7 +102,7 @@ const ContactInfoModal = ({ visible, onClose }) => {
       <div className="contact-modal-header">
         <div className="contact-modal-title-section">
           <div className="contact-modal-icon">
-            <InfoCircleOutlined />
+            <MainIcon.InfoCircleOutlined />
           </div>
           <div className="contact-modal-title-text">
             <h3>Soporte Técnico</h3>
@@ -65,13 +110,13 @@ const ContactInfoModal = ({ visible, onClose }) => {
           </div>
         </div>
         <button className="contact-modal-close" onClick={onClose}>
-          <CloseOutlined />
+          <MainIcon.CloseOutlined />
         </button>
       </div>
 
       <div className="contact-modal-body">
         <div className="contact-alert">
-          <InfoCircleOutlined className="contact-alert-icon" />
+          <MainIcon.InfoCircleOutlined className="contact-alert-icon" />
           <div>
             <strong>¿Necesitas ayuda?</strong>
             <p>Nuestro equipo está disponible para asistirte con cualquier problema.</p>
@@ -85,13 +130,13 @@ const ContactInfoModal = ({ visible, onClose }) => {
         ) : (
           <div className="contact-info-list">
             {contactInfo.map((item, index) => (
-              <div key={index} className="contact-info-item">
+              <div onClick={()=>copyToClipboard(item.valor,index)} key={index} className={`contact-info-item contact-info-item-${index}`}>
                 <div className="contact-info-icon">
-                  {getIcon(item.tipo)}
+                  {MainIcon.iconMap[item.icono] || <MainIcon.InfoCircleOutlined />}
                 </div>
                 <div className="contact-info-details">
                   <div className="contact-info-label">{item.etiqueta}</div>
-                  <div className="contact-info-value">{item.valor}</div>
+                  <div className={`contact-info-value contact-info-value-${index}`}>{item.valor}</div>
                 </div>
               </div>
             ))}

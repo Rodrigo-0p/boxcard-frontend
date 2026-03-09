@@ -1,0 +1,65 @@
+.beneficiario-header-skeleton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.beneficiario-toolbar-skeleton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.beneficiario-card-skeleton {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #f0f0f0;
+    height: 280px;
+}
+
+.benef-card-header-skeleton {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.benef-card-info-skeleton {
+    margin-bottom: 20px;
+}
+
+.benef-card-footer-skeleton {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.beneficiarios-skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.beneficiario-dashboard-skeleton {
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+
+    .beneficiario-header-skeleton,
+    .beneficiario-toolbar-skeleton {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

@@ -3,38 +3,38 @@ import PagesView from './PagesView.jsx';
 import './Pages.css'
 
 const Pages = ({ currentPage = 1,
-                  pageSize    = 10,
-                  total       = 0,
-                  onPageChange,
-                  onPageSizeChange}) => {
-  
-  const [isVisible  , setIsVisible ] = React.useState(false);
-  const [isAtBottom , setIsAtBottom] = React.useState(false);
-  const [isPinned   , setIsPinned  ] = React.useState(false);
+  pageSize = 10,
+  total = 0,
+  onPageChange,
+  onPageSizeChange }) => {
+
+  const [isVisible, setIsVisible] = React.useState(false);
+  const [isAtBottom, setIsAtBottom] = React.useState(false);
+  const [isPinned, setIsPinned] = React.useState(false);
 
   // ========================================
   // CALCULAR DATOS DE PAGINACIÓN
   // ========================================
   const totalPages = Math.ceil(total / pageSize);
-  const startItem  = total === 0 ? 0 : (currentPage - 1) * pageSize + 1;
-  const endItem    = Math.min(currentPage * pageSize, total);
+  const startItem = total === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const endItem = Math.min(currentPage * pageSize, total);
 
   // ========================================
   // DETECTAR SCROLL
   // ========================================
   // React.useEffect(() => {
-    // const handleScroll = () => {
-    //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    //   const windowHeight = window.innerHeight;
-    //   const documentHeight = document.documentElement.scrollHeight;
-      
-    //   // VISIBLE si ha scrolleado más de 110px
-    //   // setIsVisible(scrollTop > 110);
-      
-    //   // AT BOTTOM si está cerca del final (100px antes)
-    //   // const isNearBottom = scrollTop + windowHeight >= documentHeight - 100;
-    //   // setIsAtBottom(isNearBottom);
-    // };
+  // const handleScroll = () => {
+  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  //   const windowHeight = window.innerHeight;
+  //   const documentHeight = document.documentElement.scrollHeight;
+
+  //   // VISIBLE si ha scrolleado más de 110px
+  //   // setIsVisible(scrollTop > 110);
+
+  //   // AT BOTTOM si está cerca del final (100px antes)
+  //   // const isNearBottom = scrollTop + windowHeight >= documentHeight - 100;
+  //   // setIsAtBottom(isNearBottom);
+  // };
 
   //   window.addEventListener('scroll', handleScroll);
   //   handleScroll(); // Ejecutar inmediatamente
@@ -99,15 +99,15 @@ const Pages = ({ currentPage = 1,
 
   return (
     <PagesView
-      currentPage      = { currentPage      }
-      pageSize         = { pageSize         }
-      total            = { total            }
-      totalPages       = { totalPages       }
-      startItem        = { startItem        }
-      endItem          = { endItem          }
-      pageNumbers      = { getPageNumbers() }
-      onPageChange     = { handlePageChange }
-      onPageSizeChange = { handlePageSizeChange }
+      currentPage={currentPage}
+      pageSize={pageSize}
+      total={total}
+      totalPages={totalPages}
+      startItem={startItem}
+      endItem={endItem}
+      pageNumbers={getPageNumbers()}
+      onPageChange={handlePageChange}
+      onPageSizeChange={handlePageSizeChange}
     />
   );
 };

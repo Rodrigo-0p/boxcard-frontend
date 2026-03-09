@@ -68,7 +68,7 @@ export const PersonaCardSkeleton = () => {
   );
 };
 
-export const PersonaSkeletonGrid = ({ count = 6 }) => {
+export const PersonaSkeletonGrid = ({ count = 3 }) => {
   return (
     <div className="persona-skeleton-grid">
       {Array.from({ length: count }).map((_, index) => (

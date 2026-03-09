@@ -1,0 +1,436 @@
+/* ============================================================
+   BENEFICIARIOS.css  — Estilos del módulo Beneficiarios
+   ============================================================ */
+
+/* ========================================
+                  HEADER (ESTANDAR)
+   ======================================== */
+.empresas-header {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header-left {
+  flex: 1;
+  min-width: 250px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #001529;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.header-description {
+  font-size: 13px;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.empresas-header .btn-secondary {
+  background: white;
+  border: 1px solid #d9d9d9;
+  color: #001529;
+  height: 36px;
+  font-size: 13px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.empresas-header .btn-secondary:hover {
+  border-color: #001529 !important;
+  color: #001529 !important;
+  background: #fafafa !important;
+}
+
+.empresas-header .btn-icon-only {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.empresas-header .btn-icon-only:hover {
+  border-color: #001529 !important;
+  background: #fafafa !important;
+}
+
+.empresas-header .btn-primary {
+  background: #001529 !important;
+  border: none !important;
+  color: white !important;
+  height: 36px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 21, 41, 0.15);
+  transition: all 0.3s ease;
+}
+
+.empresas-header .btn-primary:hover {
+  background: #002140 !important;
+  box-shadow: 0 4px 8px rgba(0, 21, 41, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+.benef-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  padding: 0 24px 80px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ── Card individual ────────────────────────────────────────── */
+.benef-card-item {
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.benef-card-item:hover {
+  border-color: #001529;
+  box-shadow: 0 4px 12px rgba(0, 21, 41, 0.15);
+  transform: translateY(-4px);
+}
+
+.benef-card-item.inactivo {
+  opacity: 0.6;
+}
+
+/* ── Header de la card ──────────────────────────────────────── */
+.benef-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 10px;
+  gap: 12px;
+}
+
+.benef-card-avatar {
+  background: linear-gradient(60deg, #5d5d72, #001529) !important;
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.card-status {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: none;
+}
+
+.benef-card-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.benef-card-name h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #001529;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.benef-card-name p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+/* ── Cuerpo con datos clave ─────────────────────────────────── */
+.benef-card-body {
+  padding: 10px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.benef-card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #504e4e;
+}
+
+.benef-card-row .anticon {
+  color: #8c8c8c;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+/* ── Saldo destacado ────────────────────────────────────────── */
+.benef-saldo-box {
+  margin-top: 10px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.benef-saldo-box.warning {
+  background: #fff7e6;
+  border-color: #ffd591;
+}
+
+.benef-saldo-label {
+  font-size: 11px;
+  color: #8c8c8c;
+  font-weight: 500;
+}
+
+.benef-saldo-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #001529;
+}
+
+/* ── Tags ────────────────────────────────────────────────────── */
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.card-tag-tipo,
+.card-tag-modalidad {
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  background: #f5f5f5;
+  color: #001529;
+  border: 1px solid #d9d9d9;
+  margin: 0;
+}
+
+/* ── Preview expandible ──────────────────────────────────────── */
+.benef-card-preview {
+  padding: 10px 16px 8px;
+  border-top: 1px dashed #f0f0f0;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.benef-card-preview .ant-descriptions-item-label {
+  font-size: 11px;
+  color: #8c8c8c;
+}
+
+.benef-card-preview .ant-descriptions-item-content {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 200px;
+  }
+}
+
+/* ── Footer / Acciones ──────────────────────────────────────── */
+.benef-card-footer {
+  padding: 12px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.benef-card-footer .card-btn-action {
+  color: #8c8c8c;
+  font-size: 13px;
+  padding: 4px 12px;
+  height: auto;
+}
+
+.benef-card-footer .card-btn-action:hover {
+  color: #001529;
+  background: #fafafa;
+}
+
+.benef-card-footer .card-btn-action.ant-btn-text.ant-btn-dangerous:hover {
+  color: #ff4d4f;
+  background: #fff1f0;
+}
+
+/* ── Toggle preview ─────────────────────────────────────────── */
+.benef-toggle-preview {
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 4px;
+  height: auto;
+  border: none;
+  background: transparent;
+  color: #8c8c8c;
+}
+
+.benef-toggle-preview:hover {
+  color: #001529;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────── */
+.toolbar-left {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.search-input {
+  height: 36px;
+  border-radius: 18px;
+  border-color: #d9d9d9;
+}
+
+.search-input:hover {
+  border-color: #001529;
+}
+
+.search-input:focus,
+.search-input.ant-input-focused {
+  border-color: #001529;
+  box-shadow: 0 0 0 2px rgba(0, 21, 41, 0.1);
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.empresas-toolbar .ant-select {
+  height: 36px;
+}
+
+.empresas-toolbar .ant-select-selector {
+  height: 36px !important;
+  border-radius: 6px !important;
+  border-color: #d9d9d9 !important;
+  display: flex;
+  align-items: center;
+}
+
+.empresas-toolbar .ant-select-selector:hover {
+  border-color: #001529 !important;
+}
+
+.empresas-toolbar .ant-select-focused .ant-select-selector {
+  border-color: #001529 !important;
+  box-shadow: 0 0 0 2px rgba(0, 21, 41, 0.1) !important;
+}
+
+@media (max-width: 768px) {
+  .empresas-toolbar {
+    padding: 12px 16px;
+  }
+
+  .toolbar-left {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .empresas-toolbar .ant-select {
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
+/* ── Stats cards ─────────────────────────────────────────────── */
+.benef-stats-row {
+  padding: 0 24px 12px;
+}
+
+.benef-stats-row .ant-card {
+  border-radius: 8px;
+}
+
+.benef-stats-row .ant-statistic-title {
+  font-size: 11.5px;
+}
+
+.benef-stats-row .ant-statistic-content {
+  font-size: 20px;
+}
+
+/* ── Estado row inactivo tabla ───────────────────────────────── */
+.row-inactive {
+  opacity: 0.5;
+}
+
+/* ── Carga masiva ────────────────────────────────────────────── */
+.carga-masiva-dragger .ant-upload-drag {
+  border-radius: 10px;
+  border: 2px dashed #d9d9d9;
+  transition: border-color 0.3s;
+}
+
+.carga-masiva-dragger .ant-upload-drag:hover {
+  border-color: #2a4b75;
+}
+
+.carga-errores-table .ant-table-row.error-row {
+  background: #fff2f0;
+}
+
+.carga-resumen-card {
+  border-radius: 10px;
+  border-left: 4px solid #2a4b75;
+}
+
+/* ── Filas de preview en carga masiva ────────────────────────── */
+.ant-table-row.error-row > td {
+  background: #fff1f0 !important;
+}
+.ant-table-row.error-row:hover > td {
+  background: #ffccc7 !important;
+}
+.ant-table-row.warn-row > td {
+  background: #fffbe6 !important;
+}
+.ant-table-row.warn-row:hover > td {
+  background: #fff1b8 !important;
+}

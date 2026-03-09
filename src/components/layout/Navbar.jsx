@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Layout, Button, Avatar, Dropdown, Space, Typography } from 'antd';
 import MainIcon from '../../util/mainIcon';
 import { useAuth } from '../../context/AuthContext';
 import Main from '../../util/main';
+import ProfileModal from './ProfileModal';
 import './styles/Navbar.css';
 
 
@@ -10,13 +12,22 @@ const { Text } = Typography;
 
 const Navbar = ({ collapsed, setCollapsed }) => {
   const { nombre, logout } = useAuth();
+  const [profileVisible, setProfileVisible] = useState(false);
 
   const userInitials = Main.generateAbbreviation(nombre);
 
   const handleLogout = () => {
     logout();
   };
-  const userMenuItems = [{
+
+  const userMenuItems = [
+    {
+      key: 'profile',
+      icon: <MainIcon.UserOutlined />,
+      label: 'Ajustes de Perfil',
+      onClick: () => setProfileVisible(true),
+    },
+    {
       key: 'logout',
       icon: <MainIcon.LogoutOutlined />,
       label: 'Cerrar Sesión',
@@ -24,8 +35,8 @@ const Navbar = ({ collapsed, setCollapsed }) => {
     },
   ];
 
-  const clollapsed = ()=>{
-    sessionStorage.setItem("collapsed",!collapsed);
+  const clollapsed = () => {
+    sessionStorage.setItem("collapsed", !collapsed);
     setCollapsed(!collapsed);
   }
 
@@ -40,16 +51,16 @@ const Navbar = ({ collapsed, setCollapsed }) => {
       position: 'sticky',
       top: 0,
       zIndex: 100,
-      width: '100%',      
+      width: '100%',
     }}>
 
       <Button
         type="text"
         className='buttonSider'
         icon={collapsed ? <MainIcon.MenuUnfoldOutlined /> : <MainIcon.MenuFoldOutlined />}
-        onClick={clollapsed}        
+        onClick={clollapsed}
       />
-      
+
       <Dropdown
         menu={{ items: userMenuItems }}
         placement="bottomRight"
@@ -63,8 +74,13 @@ const Navbar = ({ collapsed, setCollapsed }) => {
             <Text strong>{nombre}</Text>
           </Space>
         </div>
-      
+
       </Dropdown>
+
+      <ProfileModal
+        visible={profileVisible}
+        onClose={() => setProfileVisible(false)}
+      />
     </Header>
   );
 };

@@ -1,39 +1,40 @@
-import * as React  from 'react';
-import Main        from '../../../util/main';
-import MainUrl     from './url/mainUrl';
+import * as React from 'react';
+import Main from '../../../util/main';
+import MainUrl from './url/mainUrl';
 import { useAuth } from '../../../context/AuthContext';
 // COMPONENT
-import EmpresaHeader       from './component/header/EmpresaHeader';
-import EmpresasToolbar     from './component/toolBar/EmpresaToolBar';
-import EmpresasCards       from './component/cards/EmpresasCards';
-import EmpresasTable       from './component/table/EmpresasTable';
-import EmpresaModal        from './component/modal/EmpresaModal';
+import EmpresaHeader from './component/header/EmpresaHeader';
+import EmpresasToolbar from './component/toolBar/EmpresaToolBar';
+import EmpresasCards from './component/cards/EmpresasCards';
+import EmpresasTable from './component/table/EmpresasTable';
+import EmpresaModal from './component/modal/EmpresaModal';
+import MainLayout from '../../../components/layout/MainLayout';
 
 import './styles/EMPRESA.css';
 
 const cod_form = 6;
 
 const vfilter = {
-  searchText   : '',
-  tipoFilter   : 'all',
-  estadoFilter : 'all',
-  vistaActual  : 'cards'
+  searchText: '',
+  tipoFilter: 'all',
+  estadoFilter: 'all',
+  vistaActual: 'cards'
 }
 
 const EMPRESA = () => {
   const menuProps = Main.useMenuNavigation(cod_form);
 
-  const [empresas           , setEmpresas           ] = React.useState([]);
-  const [empresasFiltradas  , setEmpresasFiltradas  ] = React.useState([]);
-  const [filters            , setFilters            ] = React.useState(vfilter);
-  const [loading            , setLoading            ] = React.useState(false);
-  const [currentPage        , setCurrentPage        ] = React.useState(1);
-  const [pageSize           , setPageSize           ] = React.useState(10);
-  const [modalVisible       , setModalVisible       ] = React.useState(false);
-  const [modalMode          , setModalMode          ] = React.useState('create');
+  const [empresas, setEmpresas] = React.useState([]);
+  const [empresasFiltradas, setEmpresasFiltradas] = React.useState([]);
+  const [filters, setFilters] = React.useState(vfilter);
+  const [loading, setLoading] = React.useState(false);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalMode, setModalMode] = React.useState('create');
   const [empresaSeleccionada, setEmpresaSeleccionada] = React.useState(null);
-  
-  const {updateLogo} = useAuth();
+
+  const { updateLogo } = useAuth();
   const message = Main.useMessage();
 
   // / Hook de permisos - indica las tablas que usa este formulario
@@ -42,7 +43,7 @@ const EMPRESA = () => {
   React.useEffect(() => {
     if (permisos?.globales?.view) {
       loadEmpresas();
-    }    
+    }
   }, [permisos]);
 
   React.useEffect(() => {
@@ -55,7 +56,7 @@ const EMPRESA = () => {
     try {
       const url_listar = MainUrl.url_listar;
       const resp = await Main.Request(url_listar, 'GET', {}); // ← await aquí
-      
+
       if (resp.data.success) {
         setEmpresas(resp.data.data);
         setEmpresasFiltradas(resp.data.data);
@@ -78,7 +79,7 @@ const EMPRESA = () => {
       // const search = filters.searchText.toLowerCase();
       const search = Main.normalize(filters.searchText);
 
-      filtered = filtered.filter(emp =>{
+      filtered = filtered.filter(emp => {
         const texto = Main.normalize(
           `${emp.nombre} ${emp.ruc}`
         );
@@ -145,26 +146,28 @@ const EMPRESA = () => {
   const handleSave = async (formData) => {
     try {
       const form = new FormData();
-      
+
       // AGREGAR CAMPOS DE ESTA FORMA POR QUE USALOGO
-      form.append('nombre'     , formData.nombre          );
-      form.append('ruc'        , formData.ruc             );
-      form.append('direccion'  , formData.direccion       );
-      form.append('correo'     , formData.correo          );
-      form.append('nro_telef'  , formData.nro_telef       );
-      form.append('tip_empresa', formData.tip_empresa     );
-      form.append('modalidad'  , formData.modalidad       );
-      form.append('limite_venc', formData.limit_venc || 0 );
-      form.append('estado'     , formData.estado          );
+      form.append('nombre', formData.nombre);
+      form.append('ruc', formData.ruc);
+      form.append('direccion', formData.direccion);
+      form.append('correo', formData.correo);
+      form.append('nro_telef', formData.nro_telef);
+      form.append('tip_empresa', formData.tip_empresa);
+      form.append('modalidad', formData.modalidad);
+      form.append('limite_credito', formData.limite_credito || 0);
+      form.append('estado', formData.estado);
+
+      form.append('es_proveedor', formData.es_proveedor ? 'S' : 'N');
 
       if (formData.logo) {
         form.append('logo', formData.logo);
       }
 
       if (modalMode === 'create') {
-        const resp = await Main.Request(MainUrl.url_insert,'POST', form);
+        const resp = await Main.Request(MainUrl.url_insert, 'POST', form);
         if (resp.data.success) {
-          message.success(resp.data.mensaje);          
+          message.success(resp.data.mensaje);
           handleModalClose();
           await handleRefreshData();
         } else {
@@ -178,7 +181,7 @@ const EMPRESA = () => {
         if (resp.data.success) {
           // message.success(resp.data.mensaje);
           if (resp.data.token) {
-            sessionStorage.setItem('token', resp.data.token);            
+            sessionStorage.setItem('token', resp.data.token);
             message.success('Empresa actualizada.');
             updateLogo();
           } else {
@@ -197,9 +200,9 @@ const EMPRESA = () => {
     }
   };
 
-  const handleSaveDelete = async ( cod_empresa = false)=>{
+  const handleSaveDelete = async (cod_empresa = false) => {
     try {
-      const resp = await Main.Request(MainUrl.url_delete,'POST',{cod_empresa});        
+      const resp = await Main.Request(MainUrl.url_delete, 'POST', { cod_empresa });
       if (resp.data.success) {
         message.success(resp.data.mensaje);
         await handleRefreshData();
@@ -215,7 +218,7 @@ const EMPRESA = () => {
   const handleExportar = async () => {
     try {
       const XLSX = await import('xlsx');
-      
+
       message.loading('Preparando exportación...', 0);
 
       const datosAExportar = empresasFiltradas;
@@ -227,23 +230,23 @@ const EMPRESA = () => {
       }
 
       const datosExcel = datosAExportar.map((emp, index) => ({
-        'N°'              : index + 1,
-        'RUC'             : emp.ruc || '',
-        'Nombre'          : emp.nombre || '',
-        'Dirección'       : emp.direccion || '',
-        'Correo'          : emp.correo || '',
-        'Teléfono'        : emp.nro_telef || '',
-        'Tipo'            : emp.tip_empresa === 'N' ? 'Nómina' : 'Beneficiario',
-        'Modalidad'       : emp.modalidad === 'PRE' ? 'Prepago' : 'Postpago',
-        'Días Crédito'    : emp.limit_venc || 0,
-        'Estado'          : emp.estado === 'A' ? 'Activo' : 'Inactivo'
+        'N°': index + 1,
+        'RUC': emp.ruc || '',
+        'Nombre': emp.nombre || '',
+        'Dirección': emp.direccion || '',
+        'Correo': emp.correo || '',
+        'Teléfono': emp.nro_telef || '',
+        'Tipo': emp.tip_empresa === 'N' ? 'Nómina' : 'Beneficiario',
+        'Modalidad': emp.modalidad === 'PRE' ? 'Prepago' : 'Postpago',
+        'Límite de Crédito': emp.limite_credito || 0,
+        'Estado': emp.estado === 'A' ? 'Activo' : 'Inactivo'
       }));
 
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(datosExcel);
 
       ws['!cols'] = [
-        { wch: 5  }, { wch: 15 }, { wch: 35 }, { wch: 40 }, { wch: 30 },
+        { wch: 5 }, { wch: 15 }, { wch: 35 }, { wch: 40 }, { wch: 30 },
         { wch: 15 }, { wch: 15 }, { wch: 12 }, { wch: 12 }, { wch: 10 }
       ];
 
@@ -267,88 +270,88 @@ const EMPRESA = () => {
   // ========================================
   // CALCULAR DATOS PAGINADOS
   // ========================================
-  const startIndex        = (currentPage - 1) * pageSize;
-  const endIndex          = startIndex + pageSize;
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
   const empresasPaginadas = empresasFiltradas.slice(startIndex, endIndex);
 
   return (
-  <Main.MainLayout {...menuProps}>
-    {
-      permisosLoading ? (
-        <>
-          <Main.EmpresaSkeleton />
-        </>
-      ) : permisosError ? (
-        <Main.SinAcceso 
-          titulo  = "Error al Verificar Permisos"
-          mensaje = "Ocurrió un error al verificar tus permisos. Por favor, intenta recargar la página."
-        />
-      ) : !permisos?.globales?.view ? (
-        <Main.SinAcceso 
-          titulo="Acceso Denegado"
-          mensaje="No tienes permisos para ver el módulo de Empresas"
-        />
-      ) : (
-        <>
-          <div style={{paddingBottom: empresasFiltradas.length >= pageSize ? '60px' : '0px'}}>
+    <MainLayout {...menuProps}>
+      {
+        permisosLoading ? (
+          <>
+            <Main.EmpresaSkeleton />
+          </>
+        ) : permisosError ? (
+          <Main.SinAcceso
+            titulo="Error al Verificar Permisos"
+            mensaje="Ocurrió un error al verificar tus permisos. Por favor, intenta recargar la página."
+          />
+        ) : !permisos?.globales?.view ? (
+          <Main.SinAcceso
+            titulo="Acceso Denegado"
+            mensaje="No tienes permisos para ver el módulo de Empresas"
+          />
+        ) : (
+          <>
+            <div style={{ paddingBottom: empresasFiltradas.length >= pageSize ? '60px' : '0px' }}>
 
-            <EmpresaHeader 
-              totalEmpresas = { empresas.length   } 
-              onRefreshData = { handleRefreshData }
-              onCreate      = { handleCreate      }
-              permisos      = { permisos.globales }
-              handleExportar= { handleExportar    }
-            />
-            
-            <EmpresasToolbar 
-              onFiltersChange={handleFiltersChange}
-            />
-
-            {filters.vistaActual === 'cards' ? (
-              
-              <EmpresasCards 
-                empresas    = { empresasPaginadas } 
-                loading     = { permisosLoading || loading}
-                onView      = { handleView        }
-                onEdit      = { handleEdit        }
-                permisos    = { permisos.globales } 
-                saveDelete  = { handleSaveDelete  }
+              <EmpresaHeader
+                totalEmpresas={empresas.length}
+                onRefreshData={handleRefreshData}
+                onCreate={handleCreate}
+                permisos={permisos.globales}
+                handleExportar={handleExportar}
               />
 
-            ) : (
-
-              <EmpresasTable 
-                empresas  = { empresasPaginadas }
-                loading   = { permisosLoading || loading}
-                onView    = { handleView        }
-                onEdit    = { handleEdit        }
-                permisos  = { permisos.globales }
-                saveDelete= { handleSaveDelete  }
+              <EmpresasToolbar
+                onFiltersChange={handleFiltersChange}
               />
 
-            )}
-          </div>
+              {filters.vistaActual === 'cards' ? (
 
-          <Main.Pages
-            currentPage      = { currentPage              }
-            pageSize         = { pageSize                 }
-            total            = { empresasFiltradas.length }
-            onPageChange     = { handlePageChange         }
-            onPageSizeChange = { handlePageSizeChange     }
-          />
+                <EmpresasCards
+                  empresas={empresasPaginadas}
+                  loading={permisosLoading || loading}
+                  onView={handleView}
+                  onEdit={handleEdit}
+                  permisos={permisos.globales}
+                  saveDelete={handleSaveDelete}
+                />
 
-          <EmpresaModal
-            visible  = { modalVisible        }
-            mode     = { modalMode           }
-            empresa  = { empresaSeleccionada }
-            onClose  = { handleModalClose    }
-            onSave   = { handleSave          }
-            permisos = { permisos.globales   } 
-          />
-        </>
-      )
-    }
-  </Main.MainLayout>
+              ) : (
+
+                <EmpresasTable
+                  empresas={empresasPaginadas}
+                  loading={permisosLoading || loading}
+                  onView={handleView}
+                  onEdit={handleEdit}
+                  permisos={permisos.globales}
+                  saveDelete={handleSaveDelete}
+                />
+
+              )}
+            </div>
+
+            <Main.Pages
+              currentPage={currentPage}
+              pageSize={pageSize}
+              total={empresasFiltradas.length}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+            />
+
+            <EmpresaModal
+              visible={modalVisible}
+              mode={modalMode}
+              empresa={empresaSeleccionada}
+              onClose={handleModalClose}
+              onSave={handleSave}
+              permisos={permisos.globales}
+            />
+          </>
+        )
+      }
+    </MainLayout>
   );
 };
 

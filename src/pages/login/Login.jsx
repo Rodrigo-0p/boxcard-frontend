@@ -1,42 +1,62 @@
-import * as React       from 'react';
-import Main             from '../../util/main'
-import MainIcon         from '../../util/mainIcon'
-import { useNavigate }  from 'react-router-dom';
-import { useAuth }      from '../../context/AuthContext';
+import * as React from 'react';
+import Main from '../../util/main'
+import MainIcon from '../../util/mainIcon'
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import ContactInfoModal from './ContactInfoModal';
+import CambiarPasswordTemporal from './Cambiarpasswordtemporal';
 
 import './styles.css'
 
-const doct     = [{ required: true,
-                    message: 'El documento es requerido'
-                  }];
-const pass     = [{ required: true,
-                    message: 'La contraseña es requerida'
-                  }];
-const urlLogin          = '/public/login';
+const doct = [{
+  required: true,
+  message: 'El documento es requerido'
+}];
+const pass = [{
+  required: true,
+  message: 'La contraseña es requerida'
+}];
+const urlLogin = '/public/login';
+const urlCambiarPasswordTemporal = '/public/cambiar-password-temporal';
 
 const Login = () => {
   const message = Main.useMessage();
 
-  const [ form ]  = Main.Form.useForm();
-  const { login,setLoading , loading } = useAuth();
-  const [ showContactModal , setShowContactModal ] = React.useState(false);
+  const [form] = Main.Form.useForm();
+  const { login, setLoading, loading } = useAuth();
+  const [showContactModal, setShowContactModal] = React.useState(false);
 
-  const navigate  = useNavigate();
+  // ✅ NUEVO: Estados para contraseña temporal
+  const [showPasswordTemporal, setShowPasswordTemporal] = React.useState(false);
+  const [usuarioTemporal, setUsuarioTemporal] = React.useState('');
+
+  const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
       setLoading(true);
       const resp = await Main.Request(urlLogin, 'POST', values, message);
       if (resp.data && resp.data.success) {
+
+        // ✅ NUEVO: Verificar si requiere cambio de contraseña
+        const { requirePasswordChange } = resp.data.datas || {};
+
+        if (requirePasswordChange) {
+          setUsuarioTemporal(values.username);
+          setShowPasswordTemporal(true);
+          setLoading(false);
+          return;
+        }
+
+        // Login normal
         const resultado = await login(resp.data.datas);
         if (resultado.success) {
           navigate("/dashboard");
-        }else{
+        } else {
           message.error(resultado.message);
         }
       } else {
-        if (resp.data) message.error(resp.data.message);
+        // if (resp.data) message.error(resp.data.message);
         setLoading(false);
       }
     } catch (err) {
@@ -44,6 +64,64 @@ const Login = () => {
       console.log('Error en login:', err);
     }
   };
+
+  // ✅ NUEVO: Callback para cambiar contraseña temporal
+  const handlePasswordTemporalChange = async ({ passwordActual, passwordNueva }) => {
+    try {
+      setLoading(true);
+
+      const formValues = form.getFieldsValue();
+
+      const response = await Main.Request(
+        urlCambiarPasswordTemporal,
+        'POST',
+        {
+          nro_documento: formValues.nro_documento,
+          username: usuarioTemporal,
+          passwordActual,
+          passwordNueva
+        },
+        message
+      );
+
+      if (response.data && response.data.success) {
+        message.success('Contraseña actualizada exitosamente');
+
+        // Cerrar modal
+        setShowPasswordTemporal(false);
+        setUsuarioTemporal('');
+
+        // Login automático con nueva contraseña
+        const loginResponse = await Main.Request(
+          urlLogin,
+          'POST',
+          {
+            nro_documento: formValues.nro_documento,
+            username: usuarioTemporal,
+            password: passwordNueva
+          },
+          message
+        );
+
+        if (loginResponse.data && loginResponse.data.success) {
+          const resultado = await login(loginResponse.data.datas);
+          if (resultado.success) {
+            navigate("/dashboard");
+          } else {
+            message.error(resultado.message);
+          }
+        }
+      } else {
+        throw new Error(response.data?.message || 'Error al cambiar contraseña');
+      }
+
+    } catch (error) {
+      console.error('Error cambiando contraseña temporal:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const validateUsername = (_, value) => {
     if (!value) {
       return Promise.reject(new Error('El usuario es requerido'));
@@ -117,10 +195,21 @@ const Login = () => {
           </a>
         </div>
       </div>
-      
-      <ContactInfoModal 
+
+      <ContactInfoModal
         visible={showContactModal}
         onClose={() => setShowContactModal(false)}
+      />
+
+      {/* ✅ NUEVO: Modal para cambiar contraseña temporal */}
+      <CambiarPasswordTemporal
+        visible={showPasswordTemporal}
+        usuario={usuarioTemporal}
+        onClose={() => {
+          setShowPasswordTemporal(false);
+          setUsuarioTemporal('');
+        }}
+        onSuccess={handlePasswordTemporalChange}
       />
     </div>
   );

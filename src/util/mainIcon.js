@@ -1,24 +1,31 @@
-import { 
-  UserOutlined         , LockFilled       ,  LockOutlined      , FileTextOutlined, 
-  EyeInvisibleOutlined , EyeTwoTone       ,  EyeInvisibleFilled, EyeFilled, 
-  FileTextFilled       , DashboardOutlined,  AppstoreOutlined  , MenuFoldOutlined,
-  ShopOutlined         , ToolOutlined     ,  LoadingOutlined   , MenuUnfoldOutlined,
-  LogoutOutlined       , BankOutlined     ,  CheckCircleFilled , MoonOutlined,
-  LaptopOutlined       , CheckOutlined    ,  BulbOutlined      , DesktopOutlined,
-  BulbFilled           , PlusOutlined     ,  ReloadOutlined    , DownloadOutlined,
-  UploadOutlined       , EditOutlined     ,  DeleteOutlined    , EyeOutlined,
-  ExclamationCircleOutlined               ,  HolderOutlined    , LeftOutlined, 
-  RightOutlined        , PushpinOutlined  ,  PushpinFilled     , EnvironmentOutlined,
-  PhoneOutlined        , MailOutlined     ,  SearchOutlined    , FilterOutlined,
-  UnorderedListOutlined, CloseOutlined    ,  CameraOutlined    , FileImageOutlined,
-  UsergroupAddOutlined , TeamOutlined     ,  IdcardOutlined    , UserAddOutlined,
-  InfoCircleOutlined   , CheckSquareOutlined , CheckCircleOutlined , KeyOutlined, 
-  MergeOutlined        , AlignLeftOutlined   , SettingOutlined     , FileOutlined
+import {
+  UserOutlined, LockFilled, LockOutlined, FileTextOutlined,
+  EyeInvisibleOutlined, EyeTwoTone, EyeInvisibleFilled, EyeFilled,
+  FileTextFilled, DashboardOutlined, AppstoreOutlined, MenuFoldOutlined,
+  ShopOutlined, ToolOutlined, LoadingOutlined, MenuUnfoldOutlined,
+  LogoutOutlined, BankOutlined, CheckCircleFilled, MoonOutlined,
+  LaptopOutlined, CheckOutlined, BulbOutlined, DesktopOutlined,
+  BulbFilled, PlusOutlined, ReloadOutlined, DownloadOutlined,
+  UploadOutlined, EditOutlined, DeleteOutlined, EyeOutlined,
+  ExclamationCircleOutlined, HolderOutlined, LeftOutlined,
+  RightOutlined, PushpinOutlined, PushpinFilled, EnvironmentOutlined,
+  PhoneOutlined, MailOutlined, SearchOutlined, FilterOutlined,
+  UnorderedListOutlined, CloseOutlined, CameraOutlined, FileImageOutlined,
+  UsergroupAddOutlined, TeamOutlined, IdcardOutlined, UserAddOutlined,
+  InfoCircleOutlined, CheckSquareOutlined, CheckCircleOutlined, KeyOutlined,
+  MergeOutlined, AlignLeftOutlined, SettingOutlined, FileOutlined,
+  MenuOutlined, ClockCircleOutlined, WhatsAppOutlined, CopyOutlined,
+  SafetyOutlined, CloseCircleOutlined, SafetyCertificateOutlined, FileAddOutlined,
+  AuditOutlined, SendOutlined, MessageOutlined, FileExcelOutlined, DollarOutlined, BarsOutlined, TableOutlined,
+  WarningOutlined, LinkOutlined, SaveOutlined, FileProtectOutlined, FileDoneOutlined, BarcodeOutlined, FileSearchOutlined,
+  SafetyCertificateFilled, SyncOutlined, StopOutlined,
+  MoneyCollectOutlined, CarryOutOutlined, ReconciliationOutlined, SolutionOutlined, ContainerOutlined,
+  FormOutlined, CloseSquareOutlined
 } from '@ant-design/icons';
 
 const main = {
   // LIBRERIA
-    UserOutlined
+  UserOutlined
   , LockOutlined
   , FileTextOutlined
   , EyeInvisibleOutlined
@@ -47,17 +54,17 @@ const main = {
   , ReloadOutlined
   , DownloadOutlined
   , UploadOutlined
-  , EditOutlined     
+  , EditOutlined
   , DeleteOutlined
   , EyeOutlined
   , ExclamationCircleOutlined
   , HolderOutlined
   , LeftOutlined
   , RightOutlined
-  , PushpinOutlined  
+  , PushpinOutlined
   , PushpinFilled
   , EnvironmentOutlined
-  , PhoneOutlined 
+  , PhoneOutlined
   , MailOutlined
   , SearchOutlined
   , FilterOutlined
@@ -77,17 +84,66 @@ const main = {
   , AlignLeftOutlined
   , SettingOutlined
   , FileOutlined
+  , MenuOutlined
+  , CopyOutlined
+  , SafetyOutlined
+  , CloseCircleOutlined
+  , SafetyCertificateOutlined
+  , FileAddOutlined
+  , AuditOutlined
+  , ClockCircleOutlined
+  , SendOutlined
+  , MessageOutlined
+  , FileExcelOutlined
+  , DollarOutlined
+  , BarsOutlined
+  , TableOutlined
+  , WarningOutlined
+  , LinkOutlined
+  , SaveOutlined
+  , FileProtectOutlined
+  , FileDoneOutlined
+  , BarcodeOutlined
+  , FileSearchOutlined
+  , SyncOutlined
+  , FileSyncOutlined: SyncOutlined
+  , SafetyCertificateFilled
+  , StopOutlined
+  , WhatsAppOutlined
+  , MoneyCollectOutlined
+  , FormOutlined
+  , CloseSquareOutlined
+  , CarryOutOutlined
+  , ReconciliationOutlined
+  , SolutionOutlined
+  , ContainerOutlined
   // MAPA DE ICONOS PARA EL MENU
   , iconMap: {
-    'SettingOutlined'     : <SettingOutlined />,
-    'DashboardOutlined'   : <DashboardOutlined />,
-    'FileTextOutlined'    : <FileTextOutlined />,
-    'UserOutlined'        : <UserOutlined />,
-    'AppstoreOutlined'    : <AppstoreOutlined />,
-    'LockOutlined'        : <LockOutlined />,
-    'ShopOutlined'        : <ShopOutlined />,
-    'ToolOutlined'        : <ToolOutlined/>,
-    'UsergroupAddOutlined': <UsergroupAddOutlined/>
+    'SettingOutlined': <SettingOutlined />,
+    'DashboardOutlined': <DashboardOutlined />,
+    'FileTextOutlined': <FileTextOutlined />,
+    'UserOutlined': <UserOutlined />,
+    'AppstoreOutlined': <AppstoreOutlined />,
+    'LockOutlined': <LockOutlined />,
+    'ShopOutlined': <ShopOutlined />,
+    'ToolOutlined': <ToolOutlined />,
+    'UsergroupAddOutlined': <UsergroupAddOutlined />,
+    'TeamOutlined': <TeamOutlined />,
+    'MailOutlined': <MailOutlined />,
+    'PhoneOutlined': <PhoneOutlined />,
+    'WhatsAppOutlined': <WhatsAppOutlined />,
+    'ClockCircleOutlined': <ClockCircleOutlined />,
+    'InfoCircleOutlined': <InfoCircleOutlined />,
+    'CheckCircleOutlined': <CheckCircleOutlined />,
+    'SafetyOutlined': <SafetyOutlined />,
+    'FileProtectOutlined': <CarryOutOutlined />,
+    'FileDoneOutlined': <ReconciliationOutlined />,
+    'AuditOutlined': <CarryOutOutlined />,
+    'SolicitudIcon': <CarryOutOutlined />,
+    'ConfirmacionIcon': <SolutionOutlined />,
+    'FileSyncOutlined': <SyncOutlined />,
+    'FileSearchOutlined': <FileSearchOutlined />,
+    'DollarOutlined': <DollarOutlined />
   }
 };
 
