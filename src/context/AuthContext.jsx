@@ -84,35 +84,37 @@ export const AuthProvider = ({ children }) => {
   };
   const updateLogo = async () => {
     let session = JSON.parse(sessionStorage.getItem("session"));
-    try {
-      const token = sessionStorage.getItem('token');
-      const response = await axios({
-        method: 'GET',
-        url: process.env.REACT_APP_BASEURL + '/img/logempresa',
-        headers: { 'x-access-token': token },
-        responseType: 'blob'
-      })
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setLogoUrl(base64String);
-        session.logoUrl = base64String;
-        sessionStorage.setItem("session", JSON.stringify(session));
-      };
-      reader.readAsDataURL(response.data);
-    } catch (err) {
-      if ([404].includes(err.status)) {
+    return new Promise(async (resolve) => {
+      try {
+        const token = sessionStorage.getItem('token');
+        const response = await axios({
+          method: 'GET',
+          url: process.env.REACT_APP_BASEURL + '/img/logempresa',
+          headers: { 'x-access-token': token },
+          responseType: 'blob'
+        })
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result;
+          setLogoUrl(base64String);
+          if (session) {
+            session.logoUrl = base64String;
+            sessionStorage.setItem("session", JSON.stringify(session));
+          }
+          resolve(true);
+        };
+        reader.readAsDataURL(response.data);
+      } catch (err) {
         setLogoUrl('');
-        session.logoUrl = '';
-        sessionStorage.setItem("session", JSON.stringify(session));
-      } else {
-        setLogoUrl('');
-        session.logoUrl = '';
-        sessionStorage.setItem("session", JSON.stringify(session));
+        if (session) {
+          session.logoUrl = '';
+          sessionStorage.setItem("session", JSON.stringify(session));
+        }
+        resolve(false);
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
+    });
   };
   const getLogo = async (url) => {
     try {
@@ -153,7 +155,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
-  const updateEmpresa = (nuevaEmpresa, newToken) => new Promise((resolve) => {
+  const updateEmpresa = (nuevaEmpresa, newToken) => new Promise(async (resolve) => {
     try {
       let session = JSON.parse(sessionStorage.getItem("session"));
       let vtoken = sessionStorage.getItem("token");
@@ -163,13 +165,17 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem("token", vtoken);
       sessionStorage.setItem("session", JSON.stringify(session));
       setEmpresa(nuevaEmpresa);
-      updateLogo()
+      await updateLogo();
       resolve(true);
     } catch (error) {
       console.error("Error al actualizar la empresa/sesión:", error);
       resolve(false);
     }
   });
+
+  const updateToken = (newToken) => {
+    sessionStorage.setItem("token", newToken);
+  };
   // Hook de inactividad: 30 mins
   useIdleTimeout(logout, 30 * 60 * 1000);
 
@@ -186,6 +192,7 @@ export const AuthProvider = ({ children }) => {
       , login
       , logout
       , updateEmpresa
+      , updateToken
       , logoUrl
       , getLogo
       , updateLogo

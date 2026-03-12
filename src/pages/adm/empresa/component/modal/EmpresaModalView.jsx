@@ -209,18 +209,21 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
                   rotate
                   aspect={1}
                   quality={1}
-                  modalTitle="Editar Imagen"
-                  modalOk="Aceptar"
+                  modalTitle="Editar imagen de logo"
+                  modalOk="Aplicar"
                   modalCancel="Cancelar"
                   grid
                   rotationSlider
-                  aspectSlider
                   showReset
                   cropShape="rect"
                   minZoom={0.1}
-                  maxZoom={5}
+                  maxZoom={3}
                   zoomSlider
                   fillColor="transparent"
+                  cropperProps={{
+                    objectFit: 'contain',
+                    restrictPosition: false
+                  }}
                 >
                   <Main.Upload
                     accept="image/*"
@@ -315,6 +318,11 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
                   parser={value => value.replace(/\₲\s?|(\.*)/g, '')}
                 />
               </Main.Form.Item>
+
+              <Main.Form.Item name="estado" label="Estado" valuePropName="checked">
+                <Main.Switch checkedChildren="A" unCheckedChildren="I" />
+              </Main.Form.Item>
+
               {permisos?.insert && (
                 <Main.Form.Item
                   name="es_proveedor"
@@ -329,10 +337,6 @@ const EmpresaModalView = ({ visible, mode, empresa, loading, onClose, onSubmit, 
                   />
                 </Main.Form.Item>
               )}
-
-              <Main.Form.Item name="estado" label="Estado" valuePropName="checked">
-                <Main.Switch checkedChildren="A" unCheckedChildren="I" />
-              </Main.Form.Item>
             </div>
           </div>
 

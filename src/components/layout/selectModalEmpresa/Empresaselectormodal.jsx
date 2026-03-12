@@ -21,14 +21,16 @@ const EmpresaSelectorModal = ({ visible, onClose, empresas= [], empresaActual = 
         if(resp.data.success){                  
           updateEmpresa(vempresa,resp.data.datas.token).then(()=>{
             message.success(resp.data.message || 'Procesado!');
-            onClose()
+            onClose();
+            // Recargar la página para refrescar menús y permisos globales
+            window.location.reload();
           });
         }else{
           message.info(resp.data.datas.message || 'Error al cargar empresas');
         }        
       });      
     } catch (error) {
-      console.log(error);
+      // Error silencioso para el selector modal
       setLoading(false);
     }finally{
       setLoading(false);

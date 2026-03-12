@@ -119,6 +119,7 @@ const main = {
   , ContainerOutlined
   // MAPA DE ICONOS PARA EL MENU
   , iconMap: {
+    'UserAddOutlined': <UserAddOutlined />,
     'SettingOutlined': <SettingOutlined />,
     'DashboardOutlined': <DashboardOutlined />,
     'FileTextOutlined': <FileTextOutlined />,

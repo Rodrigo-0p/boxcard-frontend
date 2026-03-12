@@ -61,7 +61,6 @@ const Login = () => {
       }
     } catch (err) {
       setLoading(false);
-      console.log('Error en login:', err);
     }
   };
 

@@ -19,7 +19,7 @@ const Solicitudes = () => {
           <Button 
             type="primary" 
             icon={<PlusOutlined />}
-            onClick={() => console.log('Nueva solicitud')}
+            onClick={() => {}}
           >
             Nueva Solicitud
           </Button>

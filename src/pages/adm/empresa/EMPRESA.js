@@ -156,8 +156,7 @@ const EMPRESA = () => {
       form.append('tip_empresa', formData.tip_empresa);
       form.append('modalidad', formData.modalidad);
       form.append('limite_credito', formData.limite_credito || 0);
-      form.append('estado', formData.estado);
-
+      form.append('estado', formData.estado ? 'A' : 'I');
       form.append('es_proveedor', formData.es_proveedor ? 'S' : 'N');
 
       if (formData.logo) {
@@ -171,8 +170,9 @@ const EMPRESA = () => {
           handleModalClose();
           await handleRefreshData();
         } else {
-          message.warning(resp.data.mensaje);
-          return;
+          const errMsg = resp.data.mensaje || resp.data.message || 'Error al crear empresa';
+          message.warning(errMsg);
+          throw new Error(errMsg);
         }
       } else if (modalMode === 'edit') {
 
@@ -190,12 +190,23 @@ const EMPRESA = () => {
           await handleRefreshData();
           handleModalClose();
         } else {
-          message.warning(resp.data.mensaje);
+          const errMsg = resp.data.mensaje || resp.data.message || 'Error al actualizar empresa';
+          message.warning(errMsg);
+          throw new Error(errMsg);
         }
       }
     } catch (error) {
-      console.error('Error guardando:', error);
-      message.warning('Se produjo un error al procesar la información. Intenta nuevamente o contacta soporte.');
+      console.error('Error capturado en handleSave:', error);
+      if (error.response) {
+        console.error('Data del error:', error.response.data);
+        console.error('Status del error:', error.response.status);
+      }
+      
+      // Solo mostramos el mensaje genérico si NO es un error provocado por nosotros (success: false)
+      if (!error.message || (error.message !== 'Error al crear empresa' && error.message !== 'Error al actualizar empresa' && !error.message.includes('ya está registrado'))) {
+        message.warning('Se produjo un error al procesar la información. Intenta nuevamente o contacta soporte.');
+      }
+      
       throw error;
     }
   };

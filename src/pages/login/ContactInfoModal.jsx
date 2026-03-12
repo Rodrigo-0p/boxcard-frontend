@@ -71,7 +71,6 @@ const ContactInfoModal = ({ visible, onClose }) => {
         CardElement.style.background = '';
       }, 1500);
     }).catch(() => {
-      console.log('Advertencia, No se pudo copiar!!');
     });
 
     // navigator.clipboard.writeText(text).then(()=>{

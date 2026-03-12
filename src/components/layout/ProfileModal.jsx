@@ -14,7 +14,7 @@ import './styles/ProfileModal.css';
 const { Text } = Typography;
 
 const ProfileModal = ({ visible, onClose }) => {
-    const { nombre, setNombreActualizado } = useAuth();
+    const { nombre, setNombreActualizado, updateToken } = useAuth();
     const [formDetails] = Form.useForm();
     const [formSecurity] = Form.useForm();
     const [loading, setLoading] = useState(false);
@@ -70,6 +70,9 @@ const ProfileModal = ({ visible, onClose }) => {
                 passwordNueva: values.passwordNueva
             });
             if (response.data.success) {
+                if (response.data.token) {
+                    updateToken(response.data.token);
+                }
                 message.success({
                     content: '¡Contraseña actualizada correctamente!',
                     icon: <CheckCircleFilled style={{ color: '#52c41a' }} />,

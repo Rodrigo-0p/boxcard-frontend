@@ -21,7 +21,7 @@ const PasswordField = ({
       const newPassword = generateSecurePassword(12);
       onChange(newPassword);
     }
-  }, []);
+  }, [autoGenerate, value]);
 
   // Actualizar indicador de fortaleza cuando cambia la contraseña
   React.useEffect(() => {

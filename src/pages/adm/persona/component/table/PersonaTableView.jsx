@@ -1,34 +1,23 @@
 import * as React from 'react';
-import Main     from '../../../../../util/main';
+import Main from '../../../../../util/main';
 import MainIcon from '../../../../../util/mainIcon';
 
-const PersonaTableView = ({  personas
-                           , loading
-                           , filteredInfo
-                           , onTableChange
-                           , onView
-                           , onEdit
-                           , onDelete
-                           , permisos }) => {
-
-  const getRolConfig = (rol) => {
-    const roleConfig = {
-      rol_super_adm : { color: 'purple', text: 'Super Admin'   },
-      rol_adm       : { color: 'blue'  , text: 'Admin'         },
-      rol_cliente   : { color: 'green' , text: 'Cliente Admin' },
-      rol_usuario   : { color: 'orange', text: 'Usuario Admin' },
-      rol_consulta  : { color: 'yellow', text: 'Consulta Admin'}
-    };
-    return roleConfig[rol] || { color: 'default', text: rol };
-  };
+const PersonaTableView = ({ personas
+  , loading
+  , filteredInfo
+  , onTableChange
+  , onView
+  , onEdit
+  , onDelete
+  , permisos }) => {
 
   const columns = [
     {
-      title     : '',
-      dataIndex : 'avatar',
-      key       : 'avatar',
-      width     : 50,
-      align     : 'center',
+      title: '',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      width: 50,
+      align: 'center',
       render: (_, rowdata) => {
         const userInitials = Main.generateAbbreviation(rowdata.descripcion);
         return (
@@ -38,78 +27,62 @@ const PersonaTableView = ({  personas
             </Main.Avatar>
           </Main.Space>
         )
-      },              
+      },
     },
     {
-      title     : 'Nombre',
-      dataIndex : 'descripcion',
-      key       : 'descripcion',
-      width     : 130,
-      sorter    : (a, b) => a.descripcion.localeCompare(b.descripcion),
-      render    : (descripcion) => (
+      title: 'Nombre',
+      dataIndex: 'descripcion',
+      key: 'descripcion',
+      width: 180,
+      sorter: (a, b) => a.descripcion.localeCompare(b.descripcion),
+      render: (descripcion) => (
         <span className="table-nombre">{descripcion}</span>
       ),
     },
     {
-      title     : 'Usuario',
-      dataIndex : 'usuario_pg',
-      key       : 'usuario_pg',
-      width     : 110,
+      title: 'Documento',
+      dataIndex: 'nro_documento',
+      key: 'nro_documento',
+      width: 100,
     },
     {
-      title     : 'Documento',
-      dataIndex : 'nro_documento',
-      key       : 'nro_documento',
-      width     : 80,
+      title: 'Teléfono',
+      dataIndex: 'nro_telef',
+      key: 'nro_telef',
+      width: 120,
     },
     {
-      title     : 'Teléfono',
-      dataIndex : 'nro_telef',
-      key       : 'nro_telef',
-      width     : 120,
+      title: 'Correo',
+      dataIndex: 'correo',
+      key: 'correo',
+      width: 200,
+      ellipsis: true,
     },
     {
-      title     : 'Correo',
-      dataIndex : 'correo',
-      key       : 'correo',
-      width     : 200,
-      ellipsis  : true,
+      title: 'Empresa',
+      dataIndex: 'empresa_nombre',
+      key: 'empresa_nombre',
+      width: 150,
     },
     {
-      title     : 'Empresa',
-      dataIndex : 'empresa_nombre',
-      key       : 'empresa_nombre',
-      width     : 120,
+      title: 'Creado por',
+      dataIndex: 'usuario_alta',
+      key: 'usuario_alta',
+      width: 120,
+      render: (text) => <span style={{ fontSize: '12px' }}>{text || '-'}</span>
     },
     {
-      title    : 'Rol',
-      dataIndex: 'rol_principal',
-      key      : 'rol_principal',
-      width    : 120,
-      align    : 'center',
-      filters  : [
-        { text: 'Super Admin', value: 'rol_super_adm' },
-        { text: 'Admin', value: 'rol_adm' },
-        { text: 'Cliente Admin', value: 'rol_cliente' },
-        { text: 'Usuario Admin', value: 'rol_usuario' },
-        { text: 'Consulta Admin', value: 'rol_consulta' },
-      ],
-      filteredValue: filteredInfo.rol_principal || null,
-      onFilter: (value, record) => record.rol_principal === value,
-      render: (rol) => {
-        const config = getRolConfig(rol);
-        return (
-          <Main.Tag className="table-tag-rol" color={config.color}>
-            {config.text}
-          </Main.Tag>
-        );
-      },
+      title: 'Modif. por',
+      dataIndex: 'usuario_mod',
+      key: 'usuario_mod',
+      width: 120,
+      render: (text) => <span style={{ fontSize: '12px' }}>{text || '-'}</span>
     },
     {
       title: 'Estado',
       dataIndex: 'estado',
       key: 'estado',
-      width: 80,
+      width: 100,
       align: 'center',
       filters: [
         { text: 'Activo', value: 'A' },
@@ -134,7 +107,7 @@ const PersonaTableView = ({  personas
           <Main.Button
             type="text"
             size="small"
-            disabled={!permisos.view} 
+            disabled={!permisos.view}
             icon={<MainIcon.EyeOutlined />}
             onClick={() => onView(record)}
             className="btn-action btn-view"
@@ -149,9 +122,9 @@ const PersonaTableView = ({  personas
           />
           <Main.Button
             type="text"
-            size="small"            
-            disabled={!permisos.delete} 
-            danger            
+            size="small"
+            disabled={!permisos.delete}
+            danger
             icon={<MainIcon.DeleteOutlined />}
             onClick={() => onDelete(record)}
             className="btn-action btn-delete"
@@ -159,20 +132,20 @@ const PersonaTableView = ({  personas
         </Main.Space>
       ),
     },
-  ];  
+  ];
 
   return (
     <div className="personas-table-container">
       <Main.Table
-        className  = "personas-table"
-        columns    = {columns}
-        dataSource = {personas}
-        loading    = {loading}
-        pagination = {false}
-        onChange   = {onTableChange}
-        rowKey     = "cod_persona"
-        size       = "middle"
-        scroll     = {{ x: 1200 }}
+        className="personas-table"
+        columns={columns}
+        dataSource={personas}
+        loading={loading}
+        pagination={false}
+        onChange={onTableChange}
+        rowKey="cod_persona"
+        size="middle"
+        scroll={{ x: 1000 }}
         bordered
       />
     </div>
