@@ -1,15 +1,24 @@
-import Dashboard     from '../../pages/base/dashboard/Dashboard';
-import Solicitudes   from '../../pages/base/solicitudes/Solicitudes';
-
+import SOLICITUD from '../../pages/base/solicitud/SOLICITUD';
+import BENEFICIARIOS from '../../pages/base/beneficiarios/BENEFICIARIOS';
+import ADM_DASHBOARD from '../../pages/base/dashboard/ADM_DASHBOARD';
+import SOLICITUD_REPORTE from '../../pages/base/solicitud/SOLICITUD_REPORTE';
 
 const Route = [
   {
     path: "/dashboard",
-    component: Dashboard,    
+    component: ADM_DASHBOARD,
   },
   {
     path: "/solicitudes",
-    component: Solicitudes,    
+    component: SOLICITUD,
+  },
+  {
+    path: "/beneficiarios",
+    component: BENEFICIARIOS,
+  },
+  {
+    path: "/reporte-solicitudes",
+    component: SOLICITUD_REPORTE,
   },
 ]
 

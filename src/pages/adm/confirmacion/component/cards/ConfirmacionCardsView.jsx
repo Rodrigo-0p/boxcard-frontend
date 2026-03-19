@@ -6,7 +6,8 @@ import { formatCurrency, formatDate } from '../../../solicitud/data/solicitudesM
 const ConfirmacionCardsView = ({
     solicitudes,
     loading,
-    onConfirm
+    onConfirm,
+    onReject
 }) => {
 
     if (loading) {
@@ -29,13 +30,14 @@ const ConfirmacionCardsView = ({
                     key={s.cod_solicitud}
                     solicitud={s}
                     onConfirm={onConfirm}
+                    onReject={onReject}
                 />
             ))}
         </div>
     );
 };
 
-const ConfirmacionCardItem = ({ solicitud, onConfirm }) => {
+const ConfirmacionCardItem = ({ solicitud, onConfirm, onReject }) => {
     const s = solicitud;
 
     return (
@@ -111,6 +113,14 @@ const ConfirmacionCardItem = ({ solicitud, onConfirm }) => {
 
             {/* Actions */}
             <div style={{ padding: '12px 20px', background: '#f8fafc', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'flex-end' }}>
+                <Main.Button
+                    danger
+                    icon={<MainIcon.CloseCircleOutlined />}
+                    onClick={() => onReject(s)}
+                    style={{ borderRadius: '6px', fontWeight: 500, marginRight: '8px' }}
+                >
+                    Rechazar
+                </Main.Button>
                 <Main.Button
                     type="primary"
                     icon={<MainIcon.CheckCircleOutlined />}

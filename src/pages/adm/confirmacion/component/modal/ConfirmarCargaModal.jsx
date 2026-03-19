@@ -1,31 +1,30 @@
 import * as React from 'react';
 import Main from '../../../../../util/main';
 import MainIcon from '../../../../../util/mainIcon';
-import { formatCurrency } from '../../../solicitud/data/solicitudesMock';
 
 const ConfirmarCargaModal = ({
     visible,
     solicitud,
     onClose,
     onConfirm,
+    onReject,
     loading
 }) => {
     const [form] = Main.Form.useForm();
 
     // Resetear el form cada vez que el modal se abre o cierra
-    // Esto evita que los estilos de validación (borde rojo) persistan en el DOM
     React.useEffect(() => {
-        if (!visible) {
+        if (visible && solicitud) {
             form.resetFields();
         }
-    }, [visible, form]);
+    }, [visible, solicitud, form]);
 
     const handleConfirm = async () => {
         try {
             const values = await form.validateFields();
             onConfirm(solicitud, values);
         } catch (error) {
-            // Validación fallida — Ant Design ya muestra los errores
+            // Validación fallida
         }
     };
 
@@ -43,11 +42,24 @@ const ConfirmarCargaModal = ({
             open={visible}
             onCancel={handleClose}
             width={600}
-            destroyOnHidden
             maskClosable={false}
             footer={[
                 <Main.Button key="back" onClick={handleClose}>
                     Cancelar
+                </Main.Button>,
+                <Main.Button
+                    key="reject"
+                    danger
+                    loading={loading}
+                    disabled={!solicitud}
+                    icon={<MainIcon.CloseCircleOutlined />}
+                    onClick={() => {
+                        // No cerramos el modal actual, handleReject del padre lo hará si tiene éxito
+                        onReject(solicitud);
+                    }}
+                    style={{ marginRight: '8px' }}
+                >
+                    Rechazar Solicitud
                 </Main.Button>,
                 <Main.Button
                     key="submit"
@@ -62,32 +74,32 @@ const ConfirmarCargaModal = ({
                 </Main.Button>
             ]}
         >
-            {solicitud ? (
-                <div style={{ padding: '8px 0' }}>
-                    {/* Resumen de la Solicitud */}
-                    <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
-                        <Main.Row gutter={24}>
-                            <Main.Col span={12}>
-                                <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Empresa</div>
-                                <div style={{ fontWeight: 600, color: '#1e293b' }}>{solicitud.nombre_empresa}</div>
-                            </Main.Col>
-                            <Main.Col span={12}>
-                                <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Monto a Habilitar</div>
-                                <div style={{ fontSize: '20px', fontWeight: 700, color: '#059669' }}>{formatCurrency(solicitud.monto_solicitado)}</div>
-                            </Main.Col>
-                        </Main.Row>
-                        <Main.Divider style={{ margin: '12px 0' }} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                            <span>Beneficiarios: <b>{solicitud.cant_beneficiarios} Empleados</b></span>
-                            <span>Solicitante: <b>{solicitud.solicitante_nombre || solicitud.solicitante_username}</b></span>
+            <Main.Form
+                form={form}
+                layout="vertical"
+            >
+                {solicitud ? (
+                    <div style={{ padding: '8px 0' }}>
+                        {/* Resumen de la Solicitud */}
+                        <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
+                            <Main.Row gutter={24}>
+                                <Main.Col span={12}>
+                                    <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Empresa</div>
+                                    <div style={{ fontWeight: 600, color: '#1e293b' }}>{solicitud.nombre_empresa}</div>
+                                </Main.Col>
+                                <Main.Col span={12}>
+                                    <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Monto a Habilitar</div>
+                                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#059669' }}>{Main.formatCurrency(solicitud.monto_solicitado)}</div>
+                                </Main.Col>
+                            </Main.Row>
+                            <Main.Divider style={{ margin: '12px 0' }} />
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                                <span>Beneficiarios: <b>{solicitud.cant_beneficiarios} Empleados</b></span>
+                                <span>Solicitante: <b>{solicitud.solicitante_nombre || solicitud.solicitante_username}</b></span>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Formulario de Confirmación */}
-                    <Main.Form
-                        form={form}
-                        layout="vertical"
-                    >
+                        {/* Formulario de Confirmación */}
                         <div style={{ background: '#fff', padding: '16px', borderRadius: '12px', border: '1px solid #ced4da' }}>
                             <div style={{ fontSize: '14px', fontWeight: 600, color: '#475569', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <MainIcon.FileProtectOutlined style={{ color: '#059669' }} />
@@ -108,7 +120,13 @@ const ConfirmarCargaModal = ({
                             </Main.Form.Item>
 
                             <Main.Form.Item
+                                name="comprobante"
                                 label={<span style={{ fontWeight: 600 }}>Adjunto del Comprobante (Opcional)</span>}
+                                valuePropName="fileList"
+                                getValueFromEvent={(e) => {
+                                    if (Array.isArray(e)) return e;
+                                    return e?.fileList;
+                                }}
                             >
                                 <Main.Upload maxCount={1} showUploadList beforeUpload={() => false}>
                                     <Main.Button icon={<MainIcon.UploadOutlined />} style={{ width: '100%' }}>
@@ -117,24 +135,25 @@ const ConfirmarCargaModal = ({
                                 </Main.Upload>
                             </Main.Form.Item>
                         </div>
-                    </Main.Form>
 
-                    <Main.Alert
-                        style={{ marginTop: '20px' }}
-                        type="warning"
-                        showIcon
-                        message="IMPORTANTE"
-                        description="Al confirmar esta carga, se habilitará automáticamente el saldo disponible a todos los beneficiarios incluidos en la lista. Esta acción no puede deshacerse."
-                    />
-                </div>
-            ) : (
-                <Main.Empty description="No se seleccionó ninguna solicitud" />
-            )}
+                        <Main.Alert
+                            style={{ marginTop: '20px' }}
+                            type="warning"
+                            showIcon
+                            message="IMPORTANTE"
+                            description="Al confirmar esta carga, se habilitará automáticamente el saldo disponible a todos los beneficiarios incluidos en la lista. Esta acción no puede deshacerse."
+                        />
+                    </div>
+                ) : (
+                    <Main.Empty description="No se seleccionó ninguna solicitud" />
+                )}
+            </Main.Form>
         </Main.Modal>
     );
 };
 
 export default ConfirmarCargaModal;
+
 
 
 

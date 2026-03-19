@@ -34,9 +34,11 @@ export const AuthProvider = ({ children }) => {
       setMenus(menu);
       setLogoUrl(data.logoUrl);
       setRol(data.rol || data.role);
-      if (location.pathname === '/') navigate('/dashboard', { replace: true });
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        loadUserMenus();
+      }
     }
-    loadUserMenus()
     setLoading(false);
   }, []);
 

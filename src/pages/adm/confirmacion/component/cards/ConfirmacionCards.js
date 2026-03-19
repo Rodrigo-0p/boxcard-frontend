@@ -4,13 +4,15 @@ import ConfirmacionCardsView from './ConfirmacionCardsView';
 const ConfirmacionCards = ({
     solicitudes,
     loading,
-    onConfirm
+    onConfirm,
+    onReject
 }) => {
     return (
         <ConfirmacionCardsView
             solicitudes={solicitudes}
             loading={loading}
             onConfirm={onConfirm}
+            onReject={onReject}
         />
     );
 };

@@ -7,7 +7,8 @@ const mainUrl = {
     url_enviar: '/adm/solicitud/enviar',
     url_rechazar: '/adm/solicitud/rechazar',
     url_seed: '/adm/solicitud/seed',
-    url_detalles: '/adm/solicitud/detalles'
+    url_detalles: '/adm/solicitud/detalles',
+    url_reporte: '/adm/solicitud/reporte'
 };
 
 export default mainUrl;

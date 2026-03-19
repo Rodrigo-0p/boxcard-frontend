@@ -64,3 +64,22 @@
 .solicitud-dashboard-skeleton {
   padding: 24px;
 }
+
+.dashboard-cards-skeleton {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-cards-skeleton {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-cards-skeleton {
+        grid-template-columns: 1fr;
+    }
+}

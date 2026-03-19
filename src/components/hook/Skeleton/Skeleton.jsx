@@ -146,13 +146,17 @@ export const SkeletonStatCard = ({ style = {} }) => {
     <div style={{ 
       background: '#fff', 
       padding: '24px',
-      borderRadius: '8px',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      borderRadius: '12px',
+      border: '1px solid #e2e8f0',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
       ...style
     }}>
-      <Skeleton width="60%" height="16px" marginBottom="16px" />
-      <Skeleton width="120px" height="36px" marginBottom="8px" />
-      <Skeleton width="80px" height="14px" />
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+        <SkeletonCircle size="32px" style={{ marginRight: '12px' }} />
+        <Skeleton width="60%" height="14px" />
+      </div>
+      <Skeleton width="100%" height="32px" marginBottom="4px" />
+      <Skeleton width="40%" height="12px" />
     </div>
   );
 };

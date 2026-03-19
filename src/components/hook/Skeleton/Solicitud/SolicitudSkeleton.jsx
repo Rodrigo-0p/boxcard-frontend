@@ -1,5 +1,4 @@
-import React from 'react';
-import { Skeleton, SkeletonCircle } from '../Skeleton';
+import { Skeleton, SkeletonCircle, SkeletonStatCard } from '../Skeleton';
 import './SolicitudSkeleton.css';
 
 export const SolicitudHeaderSkeleton = () => {
@@ -13,6 +12,17 @@ export const SolicitudHeaderSkeleton = () => {
                 <Skeleton width="40px" height="40px" borderRadius="8px" />
                 <Skeleton width="150px" height="40px" borderRadius="8px" />
             </div>
+        </div>
+    );
+};
+
+export const SolicitudDashboardSkeleton = () => {
+    return (
+        <div className="dashboard-cards-skeleton">
+            <SkeletonStatCard />
+            <SkeletonStatCard />
+            <SkeletonStatCard />
+            <SkeletonStatCard />
         </div>
     );
 };
@@ -83,6 +93,7 @@ export const SolicitudSkeleton = (props) => {
     return (
         <div className="solicitud-dashboard-skeleton">
             <SolicitudHeaderSkeleton />
+            <SolicitudDashboardSkeleton />
             <SolicitudSkeletonGrid count={props.count || 3} />
         </div>
     );

@@ -13,6 +13,7 @@ import {
   UnorderedListOutlined, CloseOutlined, CameraOutlined, FileImageOutlined,
   UsergroupAddOutlined, TeamOutlined, IdcardOutlined, UserAddOutlined,
   InfoCircleOutlined, CheckSquareOutlined, CheckCircleOutlined, KeyOutlined,
+  ArrowUpOutlined, ArrowDownOutlined, ArrowRightOutlined,
   MergeOutlined, AlignLeftOutlined, SettingOutlined, FileOutlined,
   MenuOutlined, ClockCircleOutlined, WhatsAppOutlined, CopyOutlined,
   SafetyOutlined, CloseCircleOutlined, SafetyCertificateOutlined, FileAddOutlined,
@@ -20,7 +21,8 @@ import {
   WarningOutlined, LinkOutlined, SaveOutlined, FileProtectOutlined, FileDoneOutlined, BarcodeOutlined, FileSearchOutlined,
   SafetyCertificateFilled, SyncOutlined, StopOutlined,
   MoneyCollectOutlined, CarryOutOutlined, ReconciliationOutlined, SolutionOutlined, ContainerOutlined,
-  FormOutlined, CloseSquareOutlined
+  FormOutlined, CloseSquareOutlined, HistoryOutlined, ControlOutlined,
+  CalculatorOutlined, PercentageOutlined, FilePdfOutlined, BarChartOutlined, ThunderboltOutlined
 } from '@ant-design/icons';
 
 const main = {
@@ -80,6 +82,9 @@ const main = {
   , CheckSquareOutlined
   , CheckCircleOutlined
   , KeyOutlined
+  , ArrowUpOutlined
+  , ArrowDownOutlined
+  , ArrowRightOutlined
   , MergeOutlined
   , AlignLeftOutlined
   , SettingOutlined
@@ -113,10 +118,17 @@ const main = {
   , MoneyCollectOutlined
   , FormOutlined
   , CloseSquareOutlined
+  , HistoryOutlined
   , CarryOutOutlined
   , ReconciliationOutlined
   , SolutionOutlined
   , ContainerOutlined
+  , ControlOutlined
+  , CalculatorOutlined
+  , PercentageOutlined
+  , FilePdfOutlined
+  , BarChartOutlined
+  , ThunderboltOutlined
   // MAPA DE ICONOS PARA EL MENU
   , iconMap: {
     'UserAddOutlined': <UserAddOutlined />,
@@ -144,7 +156,8 @@ const main = {
     'ConfirmacionIcon': <SolutionOutlined />,
     'FileSyncOutlined': <SyncOutlined />,
     'FileSearchOutlined': <FileSearchOutlined />,
-    'DollarOutlined': <DollarOutlined />
+    'DollarOutlined': <DollarOutlined />,
+    'HistoryOutlined': <HistoryOutlined />
   }
 };
 

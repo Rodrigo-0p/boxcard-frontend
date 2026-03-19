@@ -1,8 +1,7 @@
 import EMPRESA from '../../pages/adm/empresa/EMPRESA';
 import PERSONA from '../../pages/adm/persona/PERSONA';
-import SOLICITUD from '../../pages/adm/solicitud/SOLICITUD';
-import BENEFICIARIOS from '../../pages/adm/beneficiarios/BENEFICIARIOS';
 import CONFIRMACION from '../../pages/adm/confirmacion/CONFIRMACION';
+import SOLICITUD_REPORTE from '../../pages/adm/solicitud/SOLICITUD_REPORTE';
 
 const Route = [
   {
@@ -14,17 +13,13 @@ const Route = [
     component: PERSONA,
   },
   {
-    path: "/adm/solicitudes",
-    component: SOLICITUD,
-  },
-  {
-    path: "/adm/beneficiarios",
-    component: BENEFICIARIOS,
-  },
-  {
     path: "/adm/confirmacion",
     component: CONFIRMACION,
   },
+  {
+    path: "/adm/reporte-solicitudes",
+    component: SOLICITUD_REPORTE,
+  }
 ]
 
 export default Route

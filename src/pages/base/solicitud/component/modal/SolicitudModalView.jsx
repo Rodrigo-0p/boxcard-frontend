@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Main from '../../../../../util/main';
 import MainIcon from '../../../../../util/mainIcon';
-import { formatCurrency, formatDate, estadosSolicitud } from '../../data/solicitudesMock';
 import MainUrl from '../../url/mainUrl';
 
 const SolicitudModalView = ({
@@ -24,16 +23,19 @@ const SolicitudModalView = ({
     const [loadingBenef, setLoadingBenef] = React.useState(false);
     const [selectedBeneficiario, setSelectedBeneficiario] = React.useState(null);
     const [montoIndividual, setMontoIndividual] = React.useState(0);
+    const [montoMasivo, setMontoMasivo] = React.useState(0);
     const [empresas, setEmpresas] = React.useState([]);
     const [loadingEmp, setLoadingEmp] = React.useState(false);
     const [empresaActualData, setEmpresaActualData] = React.useState(null);
+    const amountInputRef = React.useRef(null);
+    const benefSelectRef = React.useRef(null);
 
     // Cargar beneficiarios para el select
     const fetchBeneficiarios = async () => {
         setLoadingBenef(true);
         try {
-            // Reutilizamos la URL de beneficiarios definida en su propio módulo
-            const resp = await Main.Request('/adm/beneficiario/listar', 'GET');
+            // Usamos el endpoint base optimizado para el contexto de empresa
+            const resp = await Main.Request('/base/beneficiario/listar', 'GET');
             if (resp.data.success) {
                 // Solo beneficiarios ACTIVOS pueden recibir carga
                 setBeneficiarios(resp.data.data.filter(b => b.estado === 'A'));
@@ -47,7 +49,7 @@ const SolicitudModalView = ({
 
     const fetchEmpresaActual = async () => {
         try {
-            const resp = await Main.Request('/adm/empresa/status', 'GET');
+            const resp = await Main.Request('/base/empresa/status', 'GET');
             if (resp.data.success) {
                 setEmpresaActualData(resp.data.data);
             }
@@ -59,11 +61,10 @@ const SolicitudModalView = ({
     const fetchEmpresas = async () => {
         setLoadingEmp(true);
         try {
-            const resp = await Main.Request('/adm/empresa/listar', 'GET');
+            const resp = await Main.Request('/base/empresa/listar_proveedores', 'GET');
             if (resp.data.success) {
                 // Solo empresas marcadas como PROVEEDORAS pueden ser destino de créditos
-                const activas = resp.data.data.filter(e => e.estado === 'A' && e.es_proveedor === 'S');
-                setEmpresas(activas);
+                setEmpresas(resp.data.data);
             }
         } catch (error) {
             console.error("Error fetching empresas:", error);
@@ -110,9 +111,6 @@ const SolicitudModalView = ({
         }
     };
 
-    // Estado para monto masivo (aplicar a todos)
-    const [montoMasivo, setMontoMasivo] = React.useState(0);
-
     const isEditable = mode === 'create' || (mode === 'edit' && solicitud?.estado === 'B');
 
     const handleAddDetalle = () => {
@@ -125,7 +123,7 @@ const SolicitudModalView = ({
         // Validar monto_limite
         const limite = parseFloat(selectedBeneficiario.monto_limite) || 0;
         if (limite > 0 && montoIndividual > limite) {
-            return message.error(`El monto (${formatCurrency(montoIndividual)}) excede el límite del beneficiario (${formatCurrency(limite)})`);
+            return message.error(`El monto (${Main.formatCurrency(montoIndividual)}) excede el límite del beneficiario (${Main.formatCurrency(limite)})`);
         }
 
         const nuevoDetalle = {
@@ -140,6 +138,8 @@ const SolicitudModalView = ({
         setDetalles([...detalles, nuevoDetalle]);
         setSelectedBeneficiario(null);
         setMontoIndividual(0);
+        // Volver el foco al buscador para la siguiente carga
+        setTimeout(() => benefSelectRef.current?.focus(), 100);
     };
 
     const handleFinalSubmit = async (enviarDirecto = false) => {
@@ -214,7 +214,7 @@ const SolicitudModalView = ({
         const actualizados = detalles.map(d => {
             const limite = parseFloat(d.monto_limite) || 0;
             if (limite > 0 && montoMasivo > limite) {
-                errores.push(`${d.nombre}: Límite ${formatCurrency(limite)}`);
+                errores.push(`${d.nombre}: Límite ${Main.formatCurrency(limite)}`);
                 return { ...d, monto: limite }; // Asignar el máximo permitido
             }
             return { ...d, monto: montoMasivo };
@@ -233,7 +233,7 @@ const SolicitudModalView = ({
                 )
             });
         } else {
-            message.success(`Monto de ${formatCurrency(montoMasivo)} aplicado a ${detalles.length} beneficiarios`);
+            message.success(`Monto de ${Main.formatCurrency(montoMasivo)} aplicado a ${detalles.length} beneficiarios`);
         }
         setMontoMasivo(0);
     };
@@ -265,7 +265,7 @@ const SolicitudModalView = ({
     const porcentajeCupo = isIlimitadoEmpresa ? 0 : Math.min(100, Math.round((cupoProyectadoTotal / (limiteCreditoEmpresa || 1)) * 100));
 
     const getEstadoConfig = (estado) => {
-        return estadosSolicitud[estado] || {
+        return Main.estadosSolicitud[estado] || {
             color: 'default',
             text: estado,
             icon: 'QuestionCircleOutlined'
@@ -346,25 +346,6 @@ const SolicitudModalView = ({
 
             {/* BODY */}
             <div className="solicitud-modal-body" style={{ padding: '0px', maxHeight: '72vh', overflowY: 'auto' }}>
-                {solicitud?.estado === 'R' && (
-                    <Main.Alert
-                        message="Solicitud Rechazada"
-                        description={
-                            <div>
-                                <strong>Motivo del rechazo:</strong> {solicitud?.motivo_rechazo || 'No se especificó un motivo.'}
-                                {solicitud?.fecha_confirmacion && (
-                                    <div style={{ fontSize: '11px', marginTop: '4px' }}>
-                                        Rechazada el {Main.formatDate(solicitud.fecha_confirmacion)} por {solicitud?.usuario_confirmacion_nombre || solicitud?.usuario_confirmacion}
-                                    </div>
-                                )}
-                            </div>
-                        }
-                        type="error"
-                        showIcon
-                        icon={<MainIcon.CloseCircleOutlined />}
-                        style={{ margin: '16px 24px 0 24px', borderRadius: '8px' }}
-                    />
-                )}
 
                 {/* SECCIÓN 1 — Identificación y Configuración Heredada */}
                 <div style={{
@@ -427,7 +408,7 @@ const SolicitudModalView = ({
                         <Main.Col span={6}>
                             <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>Fecha Solicitud</div>
                             <div style={{ fontWeight: 600, color: '#334155' }}>
-                                {solicitud?.fecha_creacion ? formatDate(solicitud.fecha_creacion) : formatDate(new Date())}
+                                {solicitud?.fecha_creacion ? Main.formatDate(solicitud.fecha_creacion) : Main.formatDate(new Date())}
                             </div>
                         </Main.Col>
 
@@ -437,11 +418,11 @@ const SolicitudModalView = ({
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
                                     <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>
                                         <MainIcon.DashboardOutlined style={{ marginRight: '6px' }} />
-                                        Uso de Cupo de Empresa {!isConfirmada && !isRejected && <span style={{ color: '#1890ff', fontSize: '10px' }}>(Proyectado)</span>}
+                                        Uso de Cupo de Empresa {!isConfirmada && <span style={{ color: '#1890ff', fontSize: '10px' }}>(Proyectado)</span>}
                                     </span>
                                     <span style={{ fontSize: '12px', color: '#64748b' }}>
                                         Disponible: <b style={{ color: porcentajeCupo > 90 ? '#ef4444' : '#10b981' }}>
-                                            {isIlimitadoEmpresa ? 'Ilimitado' : formatCurrency(limiteCreditoEmpresa - cupoProyectadoTotal)}
+                                            {isIlimitadoEmpresa ? 'Ilimitado' : Main.formatCurrency(limiteCreditoEmpresa - cupoProyectadoTotal)}
                                         </b>
                                     </span>
                                 </div>
@@ -452,12 +433,12 @@ const SolicitudModalView = ({
                                     size="small"
                                 />
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', fontSize: '11px', color: '#94a3b8' }}>
-                                    <span>Consumo Total: {formatCurrency(cupoProyectadoTotal)}</span>
-                                    <span>Límite de Crédito: {isIlimitadoEmpresa ? 'Ilimitado' : formatCurrency(limiteCreditoEmpresa)}</span>
+                                    <span>Consumo Total: {Main.formatCurrency(cupoProyectadoTotal)}</span>
+                                    <span>Límite de Crédito: {isIlimitadoEmpresa ? 'Ilimitado' : Main.formatCurrency(limiteCreditoEmpresa)}</span>
                                 </div>
                                 {!isConfirmada && !isRejected && totalMonto > 0 && (
                                     <div style={{ fontSize: '10px', color: excederiaCupo ? '#ef4444' : '#1890ff', marginTop: '4px', textAlign: 'right', fontWeight: excederiaCupo ? 700 : 400 }}>
-                                        {excederiaCupo ? '⚠ EXCEDE LÍMITE DE CRÉDITO' : `+ ${formatCurrency(totalMonto)} de esta solicitud`}
+                                        {excederiaCupo ? '⚠ EXCEDE LÍMITE DE CRÉDITO' : `+ ${Main.formatCurrency(totalMonto)} de esta solicitud`}
                                     </div>
                                 )}
                             </div>
@@ -492,17 +473,9 @@ const SolicitudModalView = ({
                                     <Main.Descriptions.Item label="Descripción">
                                         {solicitud?.descripcion || '-'}
                                     </Main.Descriptions.Item>
-                                    <Main.Descriptions.Item label="Nro. Comprobante">
-                                        <b style={{ color: '#059669' }}>{solicitud?.nro_comprobante || '-'}</b>
-                                    </Main.Descriptions.Item>
                                     <Main.Descriptions.Item label="Observaciones">
                                         {solicitud?.observaciones || '-'}
                                     </Main.Descriptions.Item>
-                                    {solicitud?.estado === 'R' && (
-                                        <Main.Descriptions.Item label={<span style={{ color: '#cf1322' }}>Motivo de Rechazo</span>}>
-                                            <b style={{ color: '#cf1322' }}>{solicitud.motivo_rechazo || 'Sin motivo especificado'}</b>
-                                        </Main.Descriptions.Item>
-                                    )}
                                 </Main.Descriptions>
 
                                 <div style={{ marginTop: '24px' }}>
@@ -518,7 +491,7 @@ const SolicitudModalView = ({
                                                 title: 'Monto',
                                                 dataIndex: 'monto',
                                                 align: 'right',
-                                                render: m => <b style={{ color: '#059669' }}>{formatCurrency(m)}</b>
+                                                render: m => <b style={{ color: '#059669' }}>{Main.formatCurrency(m)}</b>
                                             }
                                         ]}
                                     />
@@ -530,7 +503,7 @@ const SolicitudModalView = ({
                             {excederiaCupo && (
                                 <Main.Alert
                                     message="Límite de Crédito Excedido"
-                                    description={`El monto total proyectado de esta solicitud (${formatCurrency(cupoProyectadoTotal)}) excede el límite de crédito de la empresa (${formatCurrency(limiteCreditoEmpresa)}). No podrá guardar ni enviar la solicitud hasta corregirlo.`}
+                                    description={`El monto total proyectado de esta solicitud (${Main.formatCurrency(cupoProyectadoTotal)}) excede el límite de crédito de la empresa (${Main.formatCurrency(limiteCreditoEmpresa)}). No podrá guardar ni enviar la solicitud hasta corregirlo.`}
                                     type="error"
                                     showIcon
                                     style={{ marginBottom: '24px' }}
@@ -542,7 +515,7 @@ const SolicitudModalView = ({
                                     Datos de la Solicitud y Destino
                                 </div>
                                 <Main.Row gutter={16}>
-                                    {isEditable && empresas.length > 1 && (
+                                    {/* {isEditable && empresas.length > 1 && (
                                         <Main.Col span={24}>
                                             <Main.Form.Item
                                                 name="cod_empresa_destino"
@@ -565,7 +538,7 @@ const SolicitudModalView = ({
                                                 </Main.Select>
                                             </Main.Form.Item>
                                         </Main.Col>
-                                    )}
+                                    )} */}
                                     <Main.Col span={24}>
                                         <Main.Form.Item
                                             name="descripcion"
@@ -638,11 +611,19 @@ const SolicitudModalView = ({
                                         <Main.Col span={10}>
                                             <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>Buscar Beneficiario</div>
                                             <Main.Select
+                                                ref={benefSelectRef}
                                                 showSearch
                                                 allowClear
                                                 disabled={!isEditable}
                                                 style={{ width: '100%' }}
                                                 placeholder="Nombre o Documento..."
+                                                filterOption={(input, option) => {
+                                                    const b = option.data;
+                                                    if (!b) return false;
+                                                    const searchTerm = input.toLowerCase();
+                                                    return (b.nombre_completo || '').toLowerCase().includes(searchTerm) ||
+                                                        (b.nro_documento || '').toLowerCase().includes(searchTerm);
+                                                }}
                                                 optionFilterProp="children"
                                                 loading={loadingBenef}
                                                 value={selectedBeneficiario?.cod_beneficiario}
@@ -652,6 +633,12 @@ const SolicitudModalView = ({
                                                 onChange={(val, opt) => {
                                                     const b = beneficiarios.find(x => x.cod_beneficiario === val);
                                                     setSelectedBeneficiario(b);
+                                                    if (val) {
+                                                        setTimeout(() => {
+                                                            amountInputRef.current?.focus();
+                                                            amountInputRef.current?.select();
+                                                        }, 100);
+                                                    }
                                                 }}
                                                 suffixIcon={<MainIcon.SearchOutlined />}
                                             >
@@ -666,7 +653,7 @@ const SolicitudModalView = ({
                                                                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                                                                         <span style={{ color: '#94a3b8', fontSize: '11px' }}>{b.nro_documento}</span>
                                                                         {limB > 0 && (
-                                                                            <span style={{ fontSize: '10px', color: '#f59e0b', fontWeight: 600 }}>Lím: {formatCurrency(limB)}</span>
+                                                                            <span style={{ fontSize: '10px', color: '#f59e0b', fontWeight: 600 }}>Lím: {Main.formatCurrency(limB)}</span>
                                                                         )}
                                                                     </div>
                                                                 </div>
@@ -679,10 +666,11 @@ const SolicitudModalView = ({
                                             <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>
                                                 Monto a Cargar
                                                 {selectedBeneficiario && parseFloat(selectedBeneficiario.monto_limite) > 0 && (
-                                                    <span style={{ color: '#f59e0b', marginLeft: 4 }}>(Máx: {formatCurrency(parseFloat(selectedBeneficiario.monto_limite))})</span>
+                                                    <span style={{ color: '#f59e0b', marginLeft: 4 }}>(Máx: {Main.formatCurrency(parseFloat(selectedBeneficiario.monto_limite))})</span>
                                                 )}
                                             </div>
                                             <Main.InputNumber
+                                                ref={amountInputRef}
                                                 style={{ width: '100%' }}
                                                 placeholder="0"
                                                 min={0}
@@ -692,6 +680,12 @@ const SolicitudModalView = ({
                                                 parser={value => value.replace(/₲\s?|(\.*)/g, '')}
                                                 value={montoIndividual}
                                                 onChange={setMontoIndividual}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        handleAddDetalle();
+                                                    }
+                                                }}
                                                 prefix={<MainIcon.DollarOutlined style={{ color: '#94a3b8' }} />}
                                                 status={selectedBeneficiario && montoIndividual > (parseFloat(selectedBeneficiario.monto_limite) || 0) && parseFloat(selectedBeneficiario.monto_limite) > 0 ? "error" : ""}
                                                 disabled={!isEditable}
@@ -788,7 +782,7 @@ const SolicitudModalView = ({
                                                     render: (_, record) => {
                                                         const lim = record.monto_limite || 0;
                                                         return lim > 0
-                                                            ? <span style={{ fontSize: '11px', color: '#f59e0b', fontWeight: 500 }}>{formatCurrency(lim)}</span>
+                                                            ? <span style={{ fontSize: '11px', color: '#f59e0b', fontWeight: 500 }}>{Main.formatCurrency(lim)}</span>
                                                             : <span style={{ fontSize: '11px', color: '#cbd5e1' }}>Sin límite</span>;
                                                     }
                                                 },
@@ -849,7 +843,7 @@ const SolicitudModalView = ({
 
                                                 <div style={{ marginBottom: '12px' }}>
                                                     <div style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Monto Total</div>
-                                                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a' }}>{formatCurrency(totalMonto)}</div>
+                                                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a' }}>{Main.formatCurrency(totalMonto)}</div>
                                                 </div>
 
                                                 <div style={{ marginBottom: '12px' }}>
@@ -868,7 +862,7 @@ const SolicitudModalView = ({
                                                 return detalles.length > 0 && isExcedido && (
                                                     <Main.Alert
                                                         message="Cupo Excedido"
-                                                        description={`El monto total excede el saldo disponible de la empresa (${formatCurrency(limiteCredito - cupoAsignado)}).`}
+                                                        description={`El monto total excede el saldo disponible de la empresa (${Main.formatCurrency(limiteCredito - cupoAsignado)}).`}
                                                         type="error"
                                                         showIcon
                                                         style={{ marginTop: '8px' }}
@@ -930,7 +924,7 @@ const SolicitudModalView = ({
                                         </div>
                                         <div style={{ fontSize: '13px', color: '#8c8c8c' }}>
                                             <MainIcon.ClockCircleOutlined style={{ marginRight: '8px' }} />
-                                            {formatDate(solicitud.fecha_creacion)}
+                                            {Main.formatDate(solicitud.fecha_creacion)}
                                         </div>
                                     </div>
                                 </Main.Timeline.Item>
@@ -948,7 +942,7 @@ const SolicitudModalView = ({
                                             </div>
                                             <div style={{ fontSize: '13px', color: '#8c8c8c' }}>
                                                 <MainIcon.ClockCircleOutlined style={{ marginRight: '8px' }} />
-                                                {formatDate(solicitud.fecha_modificacion)}
+                                                {Main.formatDate(solicitud.fecha_modificacion)}
                                             </div>
                                         </div>
                                     </Main.Timeline.Item>
@@ -978,13 +972,7 @@ const SolicitudModalView = ({
                                             </div>
                                             <div style={{ fontSize: '13px', color: '#8c8c8c' }}>
                                                 <MainIcon.ClockCircleOutlined style={{ marginRight: '8px' }} />
-                                                {formatDate(solicitud.fecha_confirmacion)}
-                                                {solicitud.nro_comprobante && (
-                                                    <span style={{ marginLeft: '12px', color: '#059669', fontWeight: 600 }}>
-                                                        <MainIcon.BarcodeOutlined style={{ marginRight: '4px' }} />
-                                                        Ref: {solicitud.nro_comprobante}
-                                                    </span>
-                                                )}
+                                                {Main.formatDate(solicitud.fecha_confirmacion)}
                                             </div>
                                             {solicitud.motivo_rechazo && (
                                                 <Main.Alert
@@ -1027,7 +1015,7 @@ const SolicitudModalView = ({
                             style={{ marginTop: '16px' }}
                         />
                     )}
-                    {solicitud && (solicitud.estado === 'CONFIRMADA' || solicitud.estado === 'C') && solicitud.nro_comprobante && (
+                    {solicitud && solicitud.estado === 'CONFIRMADA' && solicitud.nro_comprobante && (
                         <Main.Alert
                             type="success"
                             message="Carga Confirmada"

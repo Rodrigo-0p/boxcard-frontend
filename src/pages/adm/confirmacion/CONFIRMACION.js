@@ -81,13 +81,19 @@ const CONFIRMACION = () => {
     const handleApprove = async (record, formValues) => {
         try {
             setLoading(true);
-            const payload = {
-                cod_solicitud: record.cod_solicitud,
-                nro_comprobante: formValues.nro_comprobante,
-                url_comprobante: formValues.url_comprobante || null
-            };
+            
+            // Usamos FormData para soportar la subida de archivos (comprobante)
+            const formData = new FormData();
+            formData.append('cod_solicitud', record.cod_solicitud);
+            formData.append('nro_comprobante', formValues.nro_comprobante);
+            
+            // Si hay un archivo adjunto, lo extraemos de la lista de Ant Design
+            if (formValues.comprobante && formValues.comprobante.length > 0) {
+                const file = formValues.comprobante[0].originFileObj;
+                formData.append('comprobante', file);
+            }
 
-            const resp = await Main.Request(MainUrl.url_aprobar, 'POST', payload);
+            const resp = await Main.Request(MainUrl.url_aprobar, 'POST', formData);
             if (resp.data.success) {
                 message.success(resp.data.mensaje);
                 setModalVisible(false);
@@ -102,6 +108,48 @@ const CONFIRMACION = () => {
         } finally {
             setLoading(false);
         }
+    };
+    
+    const handleReject = (record) => {
+        let motivo = '';
+        Main.Modal.confirm({
+            title: 'Rechazar Solicitud',
+            icon: <MainIcon.CloseCircleOutlined style={{ color: '#ff4d4f' }} />,
+            content: (
+                <div>
+                    <p>¿Desea rechazar la solicitud <b>SOL-{record.nro_solicitud}</b>?</p>
+                    <Main.Input.TextArea
+                        rows={3}
+                        placeholder="Motivo del rechazo (opcional)"
+                        onChange={(e) => { motivo = e.target.value; }}
+                    />
+                </div>
+            ),
+            okText: 'Rechazar',
+            okType: 'danger',
+            cancelText: 'Cancelar',
+            onOk: async () => {
+                try {
+                    setLoading(true);
+                    const resp = await Main.Request(MainUrl.url_rechazar, 'POST', {
+                        cod_solicitud: record.cod_solicitud,
+                        motivo_rechazo: motivo
+                    });
+                    if (resp.data.success) {
+                        message.success(resp.data.mensaje);
+                        setModalVisible(false);
+                        setSelectedSolicitud(null);
+                        loadPendientes();
+                    } else {
+                        message.error(resp.data.mensaje);
+                    }
+                } catch (error) {
+                    message.error('Error al rechazar solicitud');
+                } finally {
+                    setLoading(false);
+                }
+            }
+        });
     };
 
     const stats = React.useMemo(() => {
@@ -138,6 +186,7 @@ const CONFIRMACION = () => {
                     solicitudes={solicitudesFiltradas.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
                     loading={loading}
                     onConfirm={handleConfirmRequest}
+                    onReject={handleReject}
                 />
             </div>
 
@@ -154,6 +203,7 @@ const CONFIRMACION = () => {
                 solicitud={selectedSolicitud}
                 onClose={() => setModalVisible(false)}
                 onConfirm={handleApprove}
+                onReject={handleReject}
                 loading={loading}
             />
         </MainLayout>

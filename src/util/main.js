@@ -6,7 +6,8 @@ import {
   Tag, Space, Empty, Spin, Modal, Table, Layout,
   Select, Upload, Switch, InputNumber, Image, Tooltip, Badge,
   Checkbox, Row, Col, Divider, Segmented,
-  Statistic, Descriptions, Timeline, Pagination, Progress
+  Statistic, Descriptions, Timeline, Pagination, Progress,
+  DatePicker, Slider, Skeleton
 } from 'antd';
 import SinAcceso from '../components/hook/Acceso/SinAcceso';
 import usePermisos from '../components/hook/Permisos/usePermisos';
@@ -113,6 +114,59 @@ const soloNumero = (e) => {
 };
 
 
+// Estados con configuración de colores para UI
+const estadosSolicitud = {
+  B: {
+    color: 'processing',
+    text: 'Borrador',
+    icon: 'EditOutlined',
+    description: 'En proceso de elaboración'
+  },
+  P: {
+    color: 'warning',
+    text: 'Pendiente a Confirmar',
+    icon: 'ClockCircleOutlined',
+    description: 'Aguardando comprobante de pago'
+  },
+  C: {
+    color: 'success',
+    text: 'Confirmada / Vigente',
+    icon: 'CheckCircleOutlined',
+    description: 'Saldo habilitado correctamente'
+  },
+  R: {
+    color: 'error',
+    text: 'Rechazada',
+    icon: 'CloseCircleOutlined',
+    description: 'Rechazada por supervisor'
+  },
+  A: {
+    color: 'default',
+    text: 'Anulada',
+    icon: 'StopOutlined',
+    description: 'Cancelada por el usuario o empresa'
+  }
+};
+
+const formatCurrency = (value) => {
+  if (value === null || value === undefined) return '₲ 0';
+  const num = typeof value === 'string' ? parseFloat(value) : value;
+  if (isNaN(num)) return '₲ 0';
+  return `₲ ${num.toLocaleString('es-PY')}`;
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return '-';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-PY', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
 const main = {
   // LIBRERIA
   Form
@@ -120,6 +174,7 @@ const main = {
   , Button
   , Alert
   , Spin
+  , Skeleton
   , useMessage
   , Card
   , Typography
@@ -149,6 +204,8 @@ const main = {
   , Pagination
   , Progress
   , Segmented
+  , DatePicker
+  , Slider
   // HOOT Skeleton
   , DashboardSkeleton
   , EmpresaCardSkeleton
@@ -172,6 +229,9 @@ const main = {
   , generateAbbreviation
   , useMenuNavigation
   , normalize
+  , formatCurrency
+  , formatDate
+  , estadosSolicitud
 }
 
 export default main;
