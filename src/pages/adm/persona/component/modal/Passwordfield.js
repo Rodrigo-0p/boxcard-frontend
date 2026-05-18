@@ -4,15 +4,15 @@ import MainIcon from '../../../../../util/mainIcon';
 import { generateSecurePassword, getPasswordStrengthLevel } from '../../../../../util/passwordgenerator';
 import './Passwordfield.css';
 
-const PasswordField = ({ 
-  value, 
-  onChange, 
+const PasswordField = ({
+  value,
+  onChange,
   disabled = false,
   autoGenerate = true,
   label = "Contraseña"
 }) => {
-  const [showPassword , setShowPassword ] = React.useState(false);
-  const [strength     , setStrength     ] = React.useState({ level: 'Sin contraseña', score: 0, color: '#d9d9d9' });
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [strength, setStrength] = React.useState({ level: 'Sin contraseña', score: 0, color: '#d9d9d9' });
   const message = Main.useMessage();
 
   // Generar contraseña automáticamente al montar (si autoGenerate=true)
@@ -56,7 +56,7 @@ const PasswordField = ({
           {strength.level}
         </span>
       </div>
-      
+
       <div className="password-field-input-group">
         <Main.Input
           type={showPassword ? "text" : "password"}
@@ -67,10 +67,10 @@ const PasswordField = ({
           maxLength={100}
           className="password-field-input"
         />
-        
+
         <div className="password-field-actions">
           <Main.Tooltip title={showPassword ? "Ocultar" : "Mostrar"}>
-            <button 
+            <button
               type="button"
               className="password-action-btn"
               onClick={handleToggleVisibility}
@@ -79,9 +79,9 @@ const PasswordField = ({
               {showPassword ? <MainIcon.EyeInvisibleOutlined /> : <MainIcon.EyeOutlined />}
             </button>
           </Main.Tooltip>
-          
+
           <Main.Tooltip title="Copiar">
-            <button 
+            <button
               type="button"
               className="password-action-btn"
               onClick={handleCopy}
@@ -90,9 +90,9 @@ const PasswordField = ({
               <MainIcon.CopyOutlined />
             </button>
           </Main.Tooltip>
-          
+
           <Main.Tooltip title="Regenerar contraseña">
-            <button 
+            <button
               type="button"
               className="password-action-btn password-regenerate-btn"
               onClick={handleRegenerate}
@@ -103,17 +103,17 @@ const PasswordField = ({
           </Main.Tooltip>
         </div>
       </div>
-      
+
       <div className="password-strength-bar">
-        <div 
+        <div
           className="password-strength-bar-fill"
-          style={{ 
-            width: `${strength.score}%`, 
-            backgroundColor: strength.color 
+          style={{
+            width: `${strength.score}%`,
+            backgroundColor: strength.color
           }}
         />
       </div>
-      
+
       <div className="password-field-hint">
         Mínimo 8 caracteres: mayúscula, minúscula, número y símbolo
       </div>

@@ -39,18 +39,18 @@
 
 /* Cuando el sidebar está expandido (200px) */
 .ant-layout-has-sider .pagination-sticky-container {
-  margin-left: 200px;
+  padding-left: 200px;
 }
 
 /* Cuando el sidebar está colapsado (80px) */
 .ant-layout-sider-collapsed ~ * .pagination-sticky-container,
 .ant-layout-has-sider.collapsed .pagination-sticky-container {
-  margin-left: 80px;
+  padding-left: 80px;
 }
 
 /* Si usas el Layout con clase personalizada */
 .main-layout-with-sidebar .pagination-sticky-container {
-  margin-left: var(--sidebar-width, 200px);
+  padding-left: var(--sidebar-width, 200px);
 }
 
 /* ========================================

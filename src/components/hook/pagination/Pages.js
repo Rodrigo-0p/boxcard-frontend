@@ -5,6 +5,8 @@ import './Pages.css'
 const Pages = ({ currentPage = 1,
   pageSize = 10,
   total = 0,
+  label = 'elementos',
+  variant = 'sticky', // 'sticky' or 'inline'
   onPageChange,
   onPageSizeChange }) => {
 
@@ -105,6 +107,8 @@ const Pages = ({ currentPage = 1,
       totalPages={totalPages}
       startItem={startItem}
       endItem={endItem}
+      label={label}
+      variant={variant}
       pageNumbers={getPageNumbers()}
       onPageChange={handlePageChange}
       onPageSizeChange={handlePageSizeChange}

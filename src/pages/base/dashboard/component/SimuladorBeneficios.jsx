@@ -176,7 +176,7 @@ const SimuladorBeneficios = ({ limiteProp = 0, disponibleProp = 0, beneficiarios
                                 '100%': '#059669',
                             }}
                             trailColor="#f1f5f9"
-                            strokeWidth={6}
+                            size={6}
                         />
                     </div>
                 </div>

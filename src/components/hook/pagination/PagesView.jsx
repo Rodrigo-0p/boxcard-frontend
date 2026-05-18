@@ -10,18 +10,24 @@ const PagesView = React.memo(({ currentPage
                               , totalPages
                               , startItem
                               , endItem
+                              , label
+                              , variant
                               , pageNumbers
                               , onPageChange
                               , onPageSizeChange}) => {
   
+  const containerClass = variant === 'inline' 
+    ? 'pagination-inline-container' 
+    : 'pagination-sticky-container';
+
   return (
-    <div className="pagination-sticky-container">
+    <div className={containerClass}>
       <div className="pagination-sticky-content">        
                 
         {/* INFO IZQUIERDA */}
         <div className="pagination-info-left">
           <span className="pagination-text">
-            Mostrando <strong>{startItem}-{endItem}</strong> de <strong>{total}</strong> empresas
+            Mostrando <strong>{startItem}-{endItem}</strong> de <strong>{total}</strong> {label}
           </span>
           
           {/* SELECTOR DE TAMAÑO */}

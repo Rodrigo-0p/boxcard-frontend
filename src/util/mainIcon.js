@@ -22,7 +22,14 @@ import {
   SafetyCertificateFilled, SyncOutlined, StopOutlined,
   MoneyCollectOutlined, CarryOutOutlined, ReconciliationOutlined, SolutionOutlined, ContainerOutlined,
   FormOutlined, CloseSquareOutlined, HistoryOutlined, ControlOutlined,
-  CalculatorOutlined, PercentageOutlined, FilePdfOutlined, BarChartOutlined, ThunderboltOutlined
+  CalculatorOutlined, PercentageOutlined, FilePdfOutlined, BarChartOutlined, ThunderboltOutlined,
+  ClusterOutlined,
+  QuestionOutlined,
+  StarOutlined,
+  StarFilled,
+  PlusCircleOutlined,
+  FolderFilled,
+  FolderOpenFilled
 } from '@ant-design/icons';
 
 const main = {
@@ -129,8 +136,17 @@ const main = {
   , FilePdfOutlined
   , BarChartOutlined
   , ThunderboltOutlined
+  , ClusterOutlined
+  , QuestionOutlined
+  , StarOutlined
+  , StarFilled
+  , PlusCircleOutlined
+  , FolderFilled
+  , FolderOpenFilled
   // MAPA DE ICONOS PARA EL MENU
   , iconMap: {
+    'SafetyCertificateOutlined': <SafetyCertificateOutlined />,
+    'ClusterOutlined': <ClusterOutlined />,
     'UserAddOutlined': <UserAddOutlined />,
     'SettingOutlined': <SettingOutlined />,
     'DashboardOutlined': <DashboardOutlined />,

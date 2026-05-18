@@ -135,7 +135,7 @@ const ADM_DASHBOARD = () => {
                                 </div>
                             }
                             style={{ height: '100%', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', border: '1px solid #f1f5f9' }}
-                            bodyStyle={{ padding: '32px' }}
+                            styles={{ body: { padding: '32px' } }}
                         >
                             <Main.Row gutter={[32, 32]} align="middle">
                                 <Main.Col xs={24} md={12}>

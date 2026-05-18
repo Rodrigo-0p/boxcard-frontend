@@ -2,11 +2,13 @@ import * as React from 'react';
 import Main from '../../../util/main';
 import MainIcon from '../../../util/mainIcon';
 import MainLayout from '../../../components/layout/MainLayout';
-import SolicitudReporteTable from './component/table/SolicitudReporteTable';
-import SolicitudModalView from '../../base/solicitud/component/modal/SolicitudModalView';
+import SolicitudReporteTable from './component/table/SolicitudReporteTable.jsx';
+import SolicitudModalView from '../../base/solicitud/component/modal/SolicitudModalView.jsx';
 import MainUrl from './url/mainUrl';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+
+
 
 // Configurar locale global
 dayjs.locale('es');

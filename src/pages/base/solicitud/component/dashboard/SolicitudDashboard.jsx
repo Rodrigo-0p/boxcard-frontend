@@ -10,7 +10,7 @@ const SolicitudDashboard = ({ data, stats, loading }) => {
             {/* Fila Única: Información de Gestión de Crédito */}
             <Main.Row gutter={[16, 16]}>
                 <Main.Col xs={24} sm={12} lg={6}>
-                    <Main.Card bordered={false} style={{ background: '#f8fafc', borderRadius: 12, border: '1px solid #e2e8f0' }}>
+                    <Main.Card variant="borderless" style={{ background: '#f8fafc', borderRadius: 12, border: '1px solid #e2e8f0' }}>
                         <Main.Statistic 
                             title={<span style={{ color: '#64748b', fontWeight: 500 }}>Crédito Institucional</span>} 
                             value={Main.formatCurrency(data?.limite_credito || 0)} 
@@ -20,7 +20,7 @@ const SolicitudDashboard = ({ data, stats, loading }) => {
                     </Main.Card>
                 </Main.Col>
                 <Main.Col xs={24} sm={12} lg={6}>
-                    <Main.Card bordered={false} style={{ background: '#f0fdf4', borderRadius: 12, border: '1px solid #bbf7d0' }}>
+                    <Main.Card variant="borderless" style={{ background: '#f0fdf4', borderRadius: 12, border: '1px solid #bbf7d0' }}>
                         <Main.Statistic 
                             title={<span style={{ color: '#166534', fontWeight: 500 }}>Monto Confirmado</span>} 
                             value={Main.formatCurrency(stats?.montoTotal || 0)} 
@@ -30,7 +30,7 @@ const SolicitudDashboard = ({ data, stats, loading }) => {
                     </Main.Card>
                 </Main.Col>
                 <Main.Col xs={24} sm={12} lg={6}>
-                    <Main.Card bordered={false} style={{ background: '#eff6ff', borderRadius: 12, border: '1px solid #bfdbfe' }}>
+                    <Main.Card variant="borderless" style={{ background: '#eff6ff', borderRadius: 12, border: '1px solid #bfdbfe' }}>
                         <Main.Statistic 
                             title={<span style={{ color: '#1e40af', fontWeight: 500 }}>Saldo Disponible</span>} 
                             value={Main.formatCurrency((data?.limite_credito || 0) - (data?.cupo_asignado || 0))} 
@@ -40,7 +40,7 @@ const SolicitudDashboard = ({ data, stats, loading }) => {
                     </Main.Card>
                 </Main.Col>
                 <Main.Col xs={24} sm={12} lg={6}>
-                    <Main.Card bordered={false} style={{ background: '#fffbeb', borderRadius: 12, border: '1px solid #fde68a' }}>
+                    <Main.Card variant="borderless" style={{ background: '#fffbeb', borderRadius: 12, border: '1px solid #fde68a' }}>
                         <Main.Statistic 
                             title={<span style={{ color: '#92400e', fontWeight: 500 }}>Monto en Trámite</span>} 
                             value={Main.formatCurrency(stats?.montoPendiente || 0)} 

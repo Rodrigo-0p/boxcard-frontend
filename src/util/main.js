@@ -5,9 +5,9 @@ import {
   Form, Input, Button, Alert, Card, Typography, Avatar,
   Tag, Space, Empty, Spin, Modal, Table, Layout,
   Select, Upload, Switch, InputNumber, Image, Tooltip, Badge,
-  Checkbox, Row, Col, Divider, Segmented,
+  Checkbox, Row, Col, Divider, Segmented, Popover, Tree,
   Statistic, Descriptions, Timeline, Pagination, Progress,
-  DatePicker, Slider, Skeleton
+  DatePicker, Slider, Skeleton, Tabs, List
 } from 'antd';
 import SinAcceso from '../components/hook/Acceso/SinAcceso';
 import usePermisos from '../components/hook/Permisos/usePermisos';
@@ -26,7 +26,11 @@ import {
   , PersonaToolbarSkeleton
 } from '../components/hook/Skeleton/Persoana/PersonaSkeleton';
 import { SolicitudSkeleton, SolicitudSkeletonGrid } from '../components/hook/Skeleton/Solicitud/SolicitudSkeleton';
-import { BeneficiarioSkeleton, BeneficiarioSkeletonGrid } from '../components/hook/Skeleton/Beneficiario/BeneficiarioSkeleton';
+import { 
+  BeneficiarioSkeleton, 
+  BeneficiarioSkeletonGrid 
+} from '../components/hook/Skeleton/Beneficiario/BeneficiarioSkeleton';
+import { GestionAccesoSkeleton } from '../components/hook/Skeleton/GestionAcceso/GestionAccesoSkeleton';
 import { useMessage } from '../components/hook/useMessage/useMessage';
 import ImgCrop from 'antd-img-crop';
 // Algoritmos alternativos para generar abreviaciones
@@ -204,8 +208,12 @@ const main = {
   , Pagination
   , Progress
   , Segmented
+  , Popover
   , DatePicker
   , Slider
+  , Tabs
+  , Tree
+  , List
   // HOOT Skeleton
   , DashboardSkeleton
   , EmpresaCardSkeleton
@@ -218,6 +226,7 @@ const main = {
   , SolicitudSkeletonGrid
   , BeneficiarioSkeleton
   , BeneficiarioSkeletonGrid
+  , GestionAccesoSkeleton
   , usePermisos
   , useAuth
   , Pages
